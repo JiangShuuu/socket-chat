@@ -1,12 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css';
+import Index from './pages/index'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>hisss</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
