@@ -1,17 +1,35 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { io } from 'socket.io-client'
 
-export default function Index() {
-  const [id, setId] = useState('123')
+// https://ms314006.github.io/use-websocket-by-react-socket-io/
 
-  useEffect(() => {
-    const socket = io('http://localhost:8000')
-    socket.on('connect', () => {
-      setId(socket.id)
+export default function Index() {
+  const [socket, setSocker] = useState(null)
+  const [id, setId] = useState('尚未連線')
+  const [room, setRoom] = useState('NoRoom')
+  
+  const connect = () => {
+    setSocker(io('http://localhost:8000'))
+  }
+
+  const close = () => {
+    socket.emit('join-room', 'sadsa' , (msg) => {
+      setRoom(msg)
     })
-  }, [])
+    // socket.disconnect()
+    // socket.on('disconnect', (msg) => {
+    //     console.log( 'disconnected to server', msg );
+    // } );
+  }
+
 
   return (
-    <div>{id}</div>
+    <>
+      <div>ID: {id}</div>
+      <div>Room: {room}</div>
+      <input type="text"  />
+      <button onClick={connect}>開始連線</button>
+      <button onClick={close}>斷開連線</button>
+    </>
   )
 }

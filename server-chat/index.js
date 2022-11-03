@@ -18,4 +18,18 @@ const io = socket(server, {
 
 io.on("connection", (socket) => {
   console.log(socket.id)
+
+  socket.on("join-room", (room, cb) => {
+    socket.join(room)
+    cb(`Joined ${room}`)
+  })
+
+  socket.on("disconnect", (reason) => {
+    console.log(reason)
+    socket.disconnect()
+  })
 })
+
+// io.on('forceDisconnect', () => {
+//   io.disconnect();
+// });
