@@ -30,8 +30,9 @@ const InputContainer = styled.div`
   input {
     all: unset;
     background-color: white;
-    text-indent: 0.5rem;
+    text-indent: 1rem;
     height: 2.25rem;
     flex: 1 1 0%;
+    border-radius: 2rem;
   }
 `
