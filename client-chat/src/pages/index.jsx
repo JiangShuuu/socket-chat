@@ -12,10 +12,13 @@ export default function Index() {
     setSocker(io('http://localhost:8000'))
   }
 
-  const close = () => {
+  const join = () => {
     socket.emit('join-room', 'sadsa' , (msg) => {
       setRoom(msg)
     })
+  }
+
+  const close = () => {
     // socket.disconnect()
     // socket.on('disconnect', (msg) => {
     //     console.log( 'disconnected to server', msg );
@@ -29,6 +32,7 @@ export default function Index() {
       <div>Room: {room}</div>
       <input type="text"  />
       <button onClick={connect}>開始連線</button>
+      <button onClick={join}>加入房間</button>
       <button onClick={close}>斷開連線</button>
     </>
   )
