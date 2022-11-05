@@ -2,18 +2,20 @@ import React, {useState} from 'react'
 // import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
+import { useMenuToggleContext } from '../context/MenuContext'
 
 export default function Index() {
-
-
+  const { isMenuOpen, toggleMenu } = useMenuToggleContext()
 
   return (
     <Container>
       <div className='container'>
         <h1>聊天吧</h1>
       </div>
-      <button className='startChat'>開始聊天</button>
-      <Chat />
+      {isMenuOpen 
+        ? <Chat /> 
+        : <button className='startChat' onClick={toggleMenu}>開始聊天</button>
+      }
     </Container>
   )
 }

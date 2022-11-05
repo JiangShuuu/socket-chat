@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMenuToggleContext } from '../context/MenuContext'
 
 export default function ChatInput() {
+  const { toggleMenu } = useMenuToggleContext()
+
   return (
     <InputContainer>
-      <button className='inputBtn'>離開</button>
+      <button className='inputBtn' onClick={toggleMenu}>離開</button>
       <input type="text" placeholder='請輸入訊息' />
       <button className='inputBtn'>傳送</button>
     </InputContainer>
