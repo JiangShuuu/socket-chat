@@ -1,39 +1,44 @@
 import React, {useState} from 'react'
-import { io } from 'socket.io-client'
-
-// https://ms314006.github.io/use-websocket-by-react-socket-io/
-
+// import { io } from 'socket.io-client'
+import styled from "styled-components"
 export default function Index() {
-  const [socket, setSocker] = useState(null)
-  const [id, setId] = useState('尚未連線')
-  const [room, setRoom] = useState('NoRoom')
-  
-  const connect = () => {
-    setSocker(io('http://localhost:8000'))
-  }
 
-  const join = () => {
-    socket.emit('join-room', 'sadsa' , (msg) => {
-      setRoom(msg)
-    })
-  }
-
-  const close = () => {
-    // socket.disconnect()
-    // socket.on('disconnect', (msg) => {
-    //     console.log( 'disconnected to server', msg );
-    // } );
-  }
 
 
   return (
-    <>
-      <div>ID: {id}</div>
-      <div>Room: {room}</div>
-      <input type="text"  />
-      <button onClick={connect}>開始連線</button>
-      <button onClick={join}>加入房間</button>
-      <button onClick={close}>斷開連線</button>
-    </>
+    <Container>
+      <div className='container'>
+        <h1>聊天吧</h1>
+      </div>
+      <button>開始聊天</button>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  .container {
+    h1 {
+      color: #76bad2;
+    }
+  }
+  button {
+    all:unset;
+    border: 1px solid #76bad2;
+    padding: 10px;
+    font-size: 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+  }
+  button:hover {
+    color: white;
+    background-color: #76bad2;
+  }
+`
