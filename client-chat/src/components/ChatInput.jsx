@@ -15,6 +15,9 @@ export default function ChatInput() {
 }
 
 const InputContainer = styled.div`
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
   display: flex;
   align-items: center;
   background-color: #e1e0e0;
