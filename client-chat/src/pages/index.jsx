@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 // import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
-import { useMenuToggleContext } from '../context/MenuContext'
+import { MenuProvider, useMenuToggleContext } from '../context/MenuContext'
 
-export default function Index() {
+function Index() {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
 
   return (
@@ -17,6 +17,14 @@ export default function Index() {
         : <button className='startChat' onClick={toggleMenu}>開始聊天</button>
       }
     </Container>
+  )
+}
+
+export default function ContextIndex () {
+  return (
+    <MenuProvider>
+      <Index />
+    </MenuProvider>
   )
 }
 
