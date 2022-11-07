@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 // import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
@@ -39,6 +39,8 @@ const Container = styled.div`
     h1 {
       color: #07688b;
       font-size: 4rem;
+      opacity: ${props => props.menu ? 1 : 0.5};
+      transition: .5s;
     }
   }
   .startChat {

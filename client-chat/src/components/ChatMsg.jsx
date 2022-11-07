@@ -12,6 +12,8 @@ export default function ChatMsg() {
           <p className='text'>ㄋ</p>
           <p className='text'>ㄋ</p>
           <p className='text'>ㄌ</p>
+          <p className='text'>ㄌ</p>
+          <p className='text'>ㄌ</p>
         </div>
       </div>
     </Container>
