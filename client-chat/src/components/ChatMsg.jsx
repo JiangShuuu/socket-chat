@@ -1,9 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMenuToggleContext } from '../context/MenuContext'
 
 export default function ChatMsg() {
+  const { isMenuOpen } = useMenuToggleContext()
+
   return (
-    <Container>
+    <Container menu={isMenuOpen}>
       <div className='content'>
         <div className='chatbox'>
           <p className='text'>ㄋ</p>
@@ -19,6 +22,8 @@ const Container = styled.div`
   position: absolute;
   bottom: 0px;
   width: 100%;
+  transition: 0.5s;
+  opacity: ${props => props.menu ? 0 : 1};
   .content {
     max-width: 600px;
     padding: 0 0 3.5rem 0;

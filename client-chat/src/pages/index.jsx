@@ -8,14 +8,12 @@ function Index() {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
 
   return (
-    <Container>
+    <Container menu={isMenuOpen}>
       <div className='container'>
         <h1>聊天吧</h1>
       </div>
-      {isMenuOpen 
-        ? <Chat /> 
-        : <button className='startChat' onClick={toggleMenu}>開始聊天</button>
-      }
+      <button className='startChat' onClick={toggleMenu}>開始聊天</button>
+      <Chat /> 
     </Container>
   )
 }
@@ -50,7 +48,9 @@ const Container = styled.div`
     font-size: 2rem;
     border-radius: 10px;
     cursor: pointer;
+    z-index: 99;
     transition: 0.25s;
+    opacity: ${props => props.menu ? 1 : 0};
   }
   .startChat:hover {
     color: white;
