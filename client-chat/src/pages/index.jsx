@@ -9,20 +9,26 @@ const host = 'http://localhost:8000/'
 
 function Index() {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
-  const [socket, setSocket] = useState()
+  const socket = useRef(null)
 
   const connectSocket = () => {
-    setSocket(io(host))
+    // toggleMenu()
+    socket.current = io(host)
+    console.log(socket.current)
+    socket.current.on("connection", (sockets) => {
+      console.log(sockets.id)
+    })
   }
 
-  useEffect(() => {
-    console.log('hi', socket)
-    if (socket) {
-      socket.on("connection", (sockets) => {
-        console.log(sockets.id)
-      })
-    }
-  }, [socket])
+  const msgBtn = () => {
+    socket.current.emit('msg', 'hihihi', msg => {
+      console.log(msg)
+    })
+  }
+
+  const leaveBtn = () => {
+    socket.current.disconnect()
+  }
 
   return (
     <Container menu={isMenuOpen}>
@@ -30,6 +36,8 @@ function Index() {
         <h1>聊天吧</h1>
       </div>
       <button className='startChat' onClick={connectSocket}>開始聊天</button>
+      <button className='startChat' onClick={msgBtn}>送出訊息</button>
+      <button className='startChat' onClick={leaveBtn}>離開聊天</button>
       <Chat /> 
     </Container>
   )

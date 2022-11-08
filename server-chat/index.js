@@ -18,8 +18,8 @@ const io = socket(server, {
 
 io.on("connection", (socket) => {
   console.log(socket.id)
-  socket.on("getConnectId", (cb) => {
-    cb(`Socket.ID ${socket.id}`)
+  socket.on("msg", (msg, cb) => {
+    cb(`Msg: ${msg}`)
   })
 
   socket.on("join-room", (room, cb) => {
