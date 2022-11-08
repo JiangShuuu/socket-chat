@@ -25,7 +25,7 @@ const InputContainer = styled.div`
     align-items: center;
     background-color: #e1e0e0;
     height: 3rem;
-    opacity: ${props => props.menu ? 0 : 1};
+    opacity: ${props => props.menu ? 1 : 0};
     transition: 0.5s;
   }
   .inputBtn {

@@ -1,18 +1,35 @@
-import React, { useState } from 'react'
-// import { io } from 'socket.io-client'
+import React, { useState, useRef } from 'react'
+import { useEffect } from 'react'
+import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
 import { MenuProvider, useMenuToggleContext } from '../context/MenuContext'
 
+const host = 'http://localhost:8000/'
+
 function Index() {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
+  const [socket, setSocket] = useState()
+
+  const connectSocket = () => {
+    setSocket(io(host))
+  }
+
+  useEffect(() => {
+    console.log('hi', socket)
+    if (socket) {
+      socket.on("connection", (sockets) => {
+        console.log(sockets.id)
+      })
+    }
+  }, [socket])
 
   return (
     <Container menu={isMenuOpen}>
       <div className='container'>
         <h1>聊天吧</h1>
       </div>
-      <button className='startChat' onClick={toggleMenu}>開始聊天</button>
+      <button className='startChat' onClick={connectSocket}>開始聊天</button>
       <Chat /> 
     </Container>
   )
@@ -39,7 +56,7 @@ const Container = styled.div`
     h1 {
       color: #07688b;
       font-size: 4rem;
-      opacity: ${props => props.menu ? 1 : 0.5};
+      opacity: ${props => props.menu ? 0.5 : 1};
       transition: .5s;
     }
   }
@@ -52,7 +69,7 @@ const Container = styled.div`
     cursor: pointer;
     z-index: 99;
     transition: 0.25s;
-    opacity: ${props => props.menu ? 1 : 0};
+    opacity: ${props => props.menu ? 0 : 1};
   }
   .startChat:hover {
     color: white;

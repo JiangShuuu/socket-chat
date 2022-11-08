@@ -25,7 +25,7 @@ const Container = styled.div`
   bottom: 0px;
   width: 100%;
   transition: 0.5s;
-  opacity: ${props => props.menu ? 0 : 1};
+  opacity: ${props => props.menu ? 1 : 0};
   .content {
     max-width: 600px;
     padding: 0 0 3.5rem 0;
