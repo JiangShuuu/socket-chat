@@ -10,6 +10,7 @@ import userAPI  from "../apis/user";
 const host = 'http://localhost:8000/'
 
 function Index() {
+  const [userId, setUserId] = useState('')
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
   const socket = useRef(null)
   
@@ -25,10 +26,13 @@ function Index() {
 
     // create User
     const { data } = await userAPI.createUser(user)
-    console.log(data)
+ 
+    if (data.status) {
+      setUserId(data.connectId)
+    }
 
     // connect
-    await socket.current.connect()
+    // await socket.current.connect()
     // socketListener()
   }
   
@@ -44,8 +48,12 @@ function Index() {
     })
   }
 
-  const leaveBtn = () => {
-    socket.current.disconnect()
+  const leaveBtn = async () => {
+    console.log('123', userId)
+    const Id = userId
+    const { data } = await userAPI.deleteUser(Id)
+    console.log(data)
+    // socket.current.disconnect()
   }
 
   return (

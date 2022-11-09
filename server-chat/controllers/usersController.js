@@ -4,8 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 module.exports.creatUser = async (req, res, next) => {
   try {
     let { userId } = req.body
-    console.log(userId)
-
     const userIdCheck = await User.findOne({ userId })
     
     if (userIdCheck) {
@@ -23,7 +21,8 @@ module.exports.creatUser = async (req, res, next) => {
 
 module.exports.deleteUser = async (req, res, next) => {
   try {
-    const { userId } = req.body
+    const userId = req.params.id
+
     User.findOne({ userId })
       .then(user => {
         if (!user) {
@@ -31,6 +30,7 @@ module.exports.deleteUser = async (req, res, next) => {
         }
         user.delete()
       })
+
     return res.json({ status: true, err:'使用者已刪除！' })
   } catch (error) {
     console.error(error)

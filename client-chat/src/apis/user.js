@@ -7,6 +7,6 @@ export default {
     return axios.post(`${host}/api/user`, { userId: Id })
   },
   deleteUser(Id) {
-    return axios.delete(`${host}/api/user`, Id)
+    return axios.delete(`${host}/api/user/${Id}`)
   }
 }
