@@ -5,6 +5,7 @@ import styled from "styled-components"
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { MenuProvider, useMenuToggleContext } from '../context/MenuContext'
+import userAPI  from "../apis/user";
 
 const host = 'http://localhost:8000/'
 
@@ -16,16 +17,19 @@ function Index() {
     autoConnect: false
   })
 
-  const connectSocket = () => {
+  const connectSocket = async () => {
     // toggleMenu()
+
+    // uuid
     const user = uuidv4()
-    console.log(user)
 
-    socket.current.connect()
+    // create User
+    const { data } = await userAPI.createUser(user)
+    console.log(data)
 
-    setTimeout(() => {
-      console.log(socket.current.id)
-    },2000)
+    // connect
+    await socket.current.connect()
+    // socketListener()
   }
   
   // const socketListener = () => {
