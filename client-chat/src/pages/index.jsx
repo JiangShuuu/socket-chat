@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
+import { v4 as uuidv4 } from 'uuid'
 import { MenuProvider, useMenuToggleContext } from '../context/MenuContext'
 
 const host = 'http://localhost:8000/'
@@ -10,18 +11,31 @@ const host = 'http://localhost:8000/'
 function Index() {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
   const socket = useRef(null)
+  
+  socket.current = io(host, {
+    autoConnect: false
+  })
 
   const connectSocket = () => {
     // toggleMenu()
-    socket.current = io(host)
-    console.log(socket.current)
-    socket.current.on("connection", (sockets) => {
-      console.log(sockets.id)
-    })
+    const user = uuidv4()
+    console.log(user)
+
+    socket.current.connect()
+
+    setTimeout(() => {
+      console.log(socket.current.id)
+    },2000)
   }
+  
+  // const socketListener = () => {
+  //   socket.current.on("connect", () => {
+  //     console.log(socket.id)
+  //   })
+  // }
 
   const msgBtn = () => {
-    socket.current.emit('msg', 'hihihi', msg => {
+    socket.current.volatile.emit('msg', 'hihihi', msg => {
       console.log(msg)
     })
   }

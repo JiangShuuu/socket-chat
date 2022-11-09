@@ -9,7 +9,7 @@ const userRoutes = require("./routes/userRoutes")
 app.use(cors())
 app.use(express.json())
 
-app.use("/api/user", userRoutes)
+app.use("/api", userRoutes)
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,

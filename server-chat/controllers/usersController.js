@@ -1,9 +1,10 @@
 const User = require('../model/userModel')
 const { v4: uuidv4 } = require('uuid');
 
-module.exports.getUUID = async (req, res, next) => {
+module.exports.creatUser = async (req, res, next) => {
   try {
-    let userId = uuidv4();
+    let { userId } = req.body
+    console.log(userId)
 
     const userIdCheck = await User.findOne({ userId })
     

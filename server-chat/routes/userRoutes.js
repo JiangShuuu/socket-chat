@@ -1,7 +1,7 @@
-const { getUUID } = require("../controllers/usersController")
+const { creatUser } = require("../controllers/usersController")
 
 const router = require("express").Router()
 
-router.get("/getuuid", getUUID)
+router.post("/user", creatUser)
 
 module.exports = router
