@@ -32,7 +32,9 @@ function Index() {
     }
 
     // connect
-    socket.current.connect()
+    setTimeout(() => {
+      socket.current.connect()
+    }, 1000)
     // socketListener()
   }
   
@@ -49,10 +51,14 @@ function Index() {
   }
 
   const leaveBtn = async () => {
+
+    // 加判斷式做另外的function
     console.log(socket.current)
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
-    socket.current.disconnect()
+    setTimeout(() => {
+      socket.current.disconnect()
+    }, 1000)
   }
 
   return (
