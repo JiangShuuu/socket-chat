@@ -23,15 +23,23 @@ module.exports.deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.id
 
-    User.findOne({ userId })
+    if (!userId) {
+      return res.json({ status: 404, err:'找不到使用者！' })
+    }
+
+    return User.findOne({ userId })
       .then(user => {
+
         if (!user) {
           return res.json({ status: 404, err:'找不到使用者！' })
         }
+
         user.delete()
+        res.json({ status: true, err:'使用者已刪除！' })
+      }).catch(err => {
+        next(err)
       })
 
-    return res.json({ status: true, err:'使用者已刪除！' })
   } catch (error) {
     console.error(error)
     next(error)

@@ -32,7 +32,7 @@ function Index() {
     }
 
     // connect
-    // await socket.current.connect()
+    socket.current.connect()
     // socketListener()
   }
   
@@ -49,11 +49,10 @@ function Index() {
   }
 
   const leaveBtn = async () => {
-    console.log('123', userId)
-    const Id = userId
-    const { data } = await userAPI.deleteUser(Id)
+    console.log(socket.current)
+    const { data } = await userAPI.deleteUser(userId)
     console.log(data)
-    // socket.current.disconnect()
+    socket.current.disconnect()
   }
 
   return (
