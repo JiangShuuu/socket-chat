@@ -31,8 +31,17 @@ const io = socket(server, {
   }
 })
 
+// 全域陣列
+global.onlineUsers = new Map()
+
 io.on("connection", (socket) => {
   console.log(socket.id)
+
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id)
+    console.log('onlineUsers', onlineUsers)
+  })
+
   socket.on("msg", (msg, cb) => {
     cb(`Msg: ${msg}`)
   })
@@ -43,7 +52,13 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", (reason) => {
-    console.log(reason)
+    console.log(reason, socket.id)
+    onlineUsers.forEach((value, key) => {
+      if (socket.id === value) {
+        onlineUsers.delete(key)
+      }
+    })
+    console.log('onlineUsers Leave', onlineUsers)
     socket.disconnect()
   })
 })
