@@ -10,13 +10,30 @@ import userAPI  from "../apis/user";
 const host = 'http://localhost:8000/'
 
 function Index() {
-  const [userId, setUserId] = useState('')
+  const [userId, setUserId] = useState()
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
   const socket = useRef(null)
   
   socket.current = io(host, {
     autoConnect: false
   })
+
+  useEffect(() => {
+    if (userId) {
+      // 連線
+      socket.current.connect()
+      // 送出userId
+      socket.current.emit("add-user", userId)
+      // 連接
+      socket.current.on("connect", () => {
+        console.log(socket.current.id)
+      })
+      // 離開
+      socket.current.on("disconnect", () => {
+        console.log(socket.current.disconnected)
+      })
+    }
+  }, [userId])
 
   const connectSocket = async () => {
     // toggleMenu()
@@ -30,22 +47,8 @@ function Index() {
     if (data.status) {
       setUserId(data.connectId)
     }
-
-    // connect
-    setTimeout(() => {
-      socket.current.connect()
-      setTimeout(() => {
-        socket.current.emit("add-user", userId)
-      }, 1000)
-    }, 1000)
-    // socketListener()
   }
   
-  // const socketListener = () => {
-  //   socket.current.on("connect", () => {
-  //     console.log(socket.id)
-  //   })
-  // }
 
   const msgBtn = () => {
     socket.current.volatile.emit('msg', 'hihihi', msg => {
@@ -54,14 +57,12 @@ function Index() {
   }
 
   const leaveBtn = async () => {
-
     // 加判斷式做另外的function
-    console.log(socket.current)
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
     setTimeout(() => {
       socket.current.disconnect()
-    }, 1000)
+    }, 100)
   }
 
   return (
