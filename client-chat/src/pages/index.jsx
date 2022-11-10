@@ -34,7 +34,9 @@ function Index() {
     // connect
     setTimeout(() => {
       socket.current.connect()
-      socket.current.emit("add-user", userId)
+      setTimeout(() => {
+        socket.current.emit("add-user", userId)
+      }, 1000)
     }, 1000)
     // socketListener()
   }
