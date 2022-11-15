@@ -5,20 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 import { useMenuToggleContext } from '../context/MenuContext'
 
 export default function ChatMsg({ socket }) {
-  const { isMenuOpen } = useMenuToggleContext()
-  const [ msg, setMsg ] = useState([])
+  const { isMenuOpen, messages } = useMenuToggleContext()
   const [ arrMsg, setArrMsg ] = useState([])
-  // useEffect(() => {
-  //   console.log('chat')
-  //   socket.current.on("receive-msg", arrivalMsg => {
-  //     console.log('get', arrivalMsg)
-  //     // setMsg((prev) => [...prev, {msg:arrivalMsg}])
-  //   })
-  // }, [socket])
+  
   // 接收訊息
   socket.current.on("receive-msg", arrivalMsg => {
     console.log('get', arrivalMsg)
-    // setMsg((prev) => [...prev, {msg:arrivalMsg}])
   })
 
   // console.log(msg)
@@ -28,9 +20,11 @@ export default function ChatMsg({ socket }) {
       <div className='content'>
         <div className='chatbox'>
           <p>123</p>
-          <p>123</p>
-          {msg.map((item, idx) => {
+          {/* {arrMsg.map((item, idx) => {
             return <p key={idx} className='text'>{item.msg}</p>
+          })} */}
+          {messages.map((item, idx) => {
+            return <p key={idx} className='text-right'>{item.msg}</p>
           })}
         </div>
       </div>
@@ -57,5 +51,9 @@ const Container = styled.div`
   }
   .text {
     padding: 0.5rem 0;
+  }
+  .text-right {
+    padding: 0.5rem 0;
+    text-align: right;
   }
 `

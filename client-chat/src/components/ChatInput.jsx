@@ -5,7 +5,7 @@ import userAPI  from "../apis/user";
 import { useState } from 'react';
 
 export default function ChatInput({ socket, userId }) {
-  const { isMenuOpen, toggleMenu } = useMenuToggleContext()
+  const { isMenuOpen, toggleMenu, setMessages } = useMenuToggleContext()
   const [msg, setMsg] = useState("")
 
   const leaveBtn = async () => {
@@ -22,6 +22,7 @@ export default function ChatInput({ socket, userId }) {
     event.preventDefault();
     if (msg.length > 0) {
       socket.current.emit("send-msg", msg)
+      setMessages((prev) => [...prev, { msg }] )
       setMsg("");
     }
   };
