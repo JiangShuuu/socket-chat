@@ -13,10 +13,12 @@ function Index() {
   const [userId, setUserId] = useState()
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
   const socket = useRef(null)
+  const [msg, setMsg] = useState([])
   
   socket.current = io(host, {
     autoConnect: false
   })
+  
 
   useEffect(() => {
     if (userId) {
@@ -28,8 +30,10 @@ function Index() {
       socket.current.on("connect", () => {
         console.log(socket.current.id)
       })
-      socket.current.on("receive-msg", msg => {
-        console.log('get', msg)
+      // 接收訊息
+      socket.current.on("receive-msg", arrivalMsg => {
+        console.log('get', arrivalMsg)
+        // console.log(msg)
       })
       // 離開
       socket.current.on("disconnect", () => {
@@ -71,7 +75,7 @@ function Index() {
       </div>
       <button className='startChat' onClick={connectSocket}>開始聊天</button>
       <button className='startChat' onClick={msgBtn}>送出訊息</button>
-      <Chat socket={socket} userId={userId} /> 
+      <Chat socket={socket} userId={userId} msg={msg} /> 
     </Container>
   )
 }
