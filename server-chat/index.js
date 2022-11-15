@@ -42,23 +42,13 @@ io.on("connection", (socket) => {
     console.log('onlineUsers', onlineUsers)
   })
 
-  // socket.on("msg", (msg, cb) => {
-  //   cb(`Msg: ${msg}`)
-  // })
-
   socket.on("send-msg", (msg, room) => {
-    // const sendUserSocket = onlineUsers.get(data.to);
-    // if (sendUserSocket) {
-    //   socket.to(sendUserSocket).emit("msg-recieve", data.message);
-    // }
-    console.log(msg)
-    console.log(room)
     if (!room) {
-      socket.emit("receive-msg", msg)
-      console.log('other')
+      socket.broadcast.emit("receive-msg", msg)
+      console.log('other', msg)
     } else {
       socket.to(room).emit("receive-msg", msg)
-      console.log('new')
+      console.log('new', msg)
     }
   })
 

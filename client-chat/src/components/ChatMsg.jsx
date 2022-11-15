@@ -1,14 +1,27 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { v4 as uuidv4 } from "uuid";
 import { useMenuToggleContext } from '../context/MenuContext'
 
-export default function ChatMsg({ socket, msg }) {
+export default function ChatMsg({ socket }) {
   const { isMenuOpen } = useMenuToggleContext()
-  useEffect(() => {
-    console.log('chat', msg)
-  }, [msg])
+  const [ msg, setMsg ] = useState([])
+  const [ arrMsg, setArrMsg ] = useState([])
+  // useEffect(() => {
+  //   console.log('chat')
+  //   socket.current.on("receive-msg", arrivalMsg => {
+  //     console.log('get', arrivalMsg)
+  //     // setMsg((prev) => [...prev, {msg:arrivalMsg}])
+  //   })
+  // }, [socket])
+  // 接收訊息
+  socket.current.on("receive-msg", arrivalMsg => {
+    console.log('get', arrivalMsg)
+    // setMsg((prev) => [...prev, {msg:arrivalMsg}])
+  })
+
+  // console.log(msg)
 
   return (
     <Container menu={isMenuOpen}>
@@ -16,9 +29,9 @@ export default function ChatMsg({ socket, msg }) {
         <div className='chatbox'>
           <p>123</p>
           <p>123</p>
-          {/* {msg.map((item) => {
-            return <p key={uuidv4()} className='text'>{item.msg}</p>
-          })} */}
+          {msg.map((item, idx) => {
+            return <p key={idx} className='text'>{item.msg}</p>
+          })}
         </div>
       </div>
     </Container>
