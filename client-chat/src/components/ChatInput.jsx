@@ -1,16 +1,45 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useMenuToggleContext } from '../context/MenuContext'
+import userAPI  from "../apis/user";
+import { useState } from 'react';
 
-export default function ChatInput() {
+export default function ChatInput({ socket, userId }) {
   const { isMenuOpen, toggleMenu } = useMenuToggleContext()
+  const [msg, setMsg] = useState("")
+
+  const leaveBtn = async () => {
+    // 加判斷式做另外的function
+    const { data } = await userAPI.deleteUser(userId)
+    console.log(data)
+    setTimeout(() => {
+      socket.current.disconnect()
+      toggleMenu()
+    }, 100)
+  }
+
+  const sendChat = (event) => {
+    event.preventDefault();
+    if (msg.length > 0) {
+      socket.current.emit("send-msg", msg)
+      setMsg("");
+    }
+  };
+
 
   return (
     <InputContainer menu={isMenuOpen}>
       <div className='box'>
-        <button className='inputBtn' onClick={toggleMenu}>離開</button>
-        <input type="text" placeholder='請輸入訊息' />
-        <button className='inputBtn'>傳送</button>
+        <button className='inputBtn' onClick={leaveBtn}>離開</button>
+        <form className="input-container" onSubmit={(event) => sendChat(event)}>
+          <input
+            type="text"
+            placeholder="聊些什麼吧？"
+            onChange={(e) => setMsg(e.target.value)}
+            value={msg}
+          />
+          <button type="submit" className='inputBtn'>傳送</button>
+        </form>
       </div>
     </InputContainer>
   )

@@ -22,21 +22,24 @@ function Index() {
     if (userId) {
       // 連線
       socket.current.connect()
-      // 送出userId
+      // 送出 userId
       socket.current.emit("add-user", userId)
       // 連接
       socket.current.on("connect", () => {
         console.log(socket.current.id)
+      })
+      socket.current.on("receive-msg", msg => {
+        console.log('get', msg)
       })
       // 離開
       socket.current.on("disconnect", () => {
         console.log(socket.current.disconnected)
       })
     }
-  }, [userId])
+  }, [userId, socket])
 
   const connectSocket = async () => {
-    // toggleMenu()
+    toggleMenu()
 
     // uuid
     const user = uuidv4()
@@ -48,7 +51,6 @@ function Index() {
       setUserId(data.connectId)
     }
   }
-  
 
   const msgBtn = () => {
     socket.current.volatile.emit('msg', 'hihihi', msg => {
@@ -56,14 +58,11 @@ function Index() {
     })
   }
 
-  const leaveBtn = async () => {
-    // 加判斷式做另外的function
-    const { data } = await userAPI.deleteUser(userId)
-    console.log(data)
-    setTimeout(() => {
-      socket.current.disconnect()
-    }, 100)
-  }
+  // const addRoom = () => {
+  //   socket.current.emit('join-room', '1234', msg => {
+  //     console.log(msg)
+  //   })
+  // }
 
   return (
     <Container menu={isMenuOpen}>
@@ -72,8 +71,7 @@ function Index() {
       </div>
       <button className='startChat' onClick={connectSocket}>開始聊天</button>
       <button className='startChat' onClick={msgBtn}>送出訊息</button>
-      <button className='startChat' onClick={leaveBtn}>離開聊天</button>
-      <Chat /> 
+      <Chat socket={socket} userId={userId} /> 
     </Container>
   )
 }

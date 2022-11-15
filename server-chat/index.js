@@ -42,14 +42,31 @@ io.on("connection", (socket) => {
     console.log('onlineUsers', onlineUsers)
   })
 
-  socket.on("msg", (msg, cb) => {
-    cb(`Msg: ${msg}`)
+  // socket.on("msg", (msg, cb) => {
+  //   cb(`Msg: ${msg}`)
+  // })
+
+  socket.on("send-msg", (msg, room) => {
+    // const sendUserSocket = onlineUsers.get(data.to);
+    // if (sendUserSocket) {
+    //   socket.to(sendUserSocket).emit("msg-recieve", data.message);
+    // }
+    console.log(msg)
+    console.log(room)
+    if (!room) {
+      socket.emit("receive-msg", msg)
+      console.log('other')
+    } else {
+      socket.to(room).emit("receive-msg", msg)
+      console.log('new')
+    }
   })
 
-  socket.on("join-room", (room, cb) => {
-    socket.join(room)
-    cb(`Joined ${room}`)
-  })
+  // socket.on("join-room", (room, cb) => {
+  //   console.log('join', room)
+  //   socket.join(room)
+  //   cb(`Joined ${room}`)
+  // })
 
   socket.on("disconnect", (reason) => {
     console.log(reason, socket.id)

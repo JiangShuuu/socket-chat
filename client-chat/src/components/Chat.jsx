@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import ChatInput from './ChatInput'
 import ChatMsg from './ChatMsg'
 
-export default function Chat() {
+export default function Chat({ userId, socket }) {
   return (
     <Container>
-      <ChatMsg />
-      <ChatInput />
+      <ChatMsg socket={socket} />
+      <ChatInput socket={socket} userId={userId} />
     </Container>
   )
 }

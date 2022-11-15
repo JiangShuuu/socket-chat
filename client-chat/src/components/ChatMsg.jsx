@@ -1,19 +1,34 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useMenuToggleContext } from '../context/MenuContext'
 
-export default function ChatMsg() {
+export default function ChatMsg({ socket }) {
   const { isMenuOpen } = useMenuToggleContext()
+  const [msg, setMsg] = useState([])
+
+  useEffect(() => {
+    console.log('egeg')
+    if (socket.current) {
+      console.log('ooooo')
+      // 接收訊息
+      socket.current.on("receive-msg", msg => {
+        console.log('get')
+        setMsg((prev) => [...prev, { msg }] )
+      })
+    }
+  }, [socket])
+  
 
   return (
     <Container menu={isMenuOpen}>
       <div className='content'>
         <div className='chatbox'>
-          <p className='text'>ㄋ</p>
-          <p className='text'>ㄋ</p>
-          <p className='text'>ㄌ</p>
-          <p className='text'>ㄌ</p>
-          <p className='text'>ㄌ</p>
+          <p>123</p>
+          <p>123</p>
+          {msg.map((item, idx) => {
+            return <p key={idx} className='text'>{item}</p>
+          })}
         </div>
       </div>
     </Container>
