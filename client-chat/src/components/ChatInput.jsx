@@ -4,34 +4,30 @@ import { useSocketContext } from '../context/SocketContext'
 import userAPI  from "../apis/user";
 import { useState } from 'react';
 
-export default function ChatInput({ socket, userId }) {
-  const { isMenuOpen, toggleMenu, setMessages } = useSocketContext()
+export default function ChatInput({ userId }) {
+  const { socket, isMenuOpen, toggleMenu, setMessages } = useSocketContext()
   const [msg, setMsg] = useState("")
 
   const leaveBtn = async () => {
     // 加判斷式做另外的function
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
-    setTimeout(() => {
-      // socket.current.disconnect()
-      toggleMenu()
-    }, 100)
+    toggleMenu(false)
   }
 
   const sendChat = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
-      // socket.current.emit("send-msg", msg)
+      socket.emit("send-msg", msg)
       setMessages((prev) => [...prev, { msg }] )
       setMsg("");
     }
   };
 
-
   return (
     <InputContainer menu={isMenuOpen}>
       <div className='box'>
-        <button className='inputBtn' onClick={() => toggleMenu(false)}>離開</button>
+        <button className='inputBtn' onClick={leaveBtn}>離開</button>
         <form className="input-container" onSubmit={(event) => sendChat(event)}>
           <input
             type="text"

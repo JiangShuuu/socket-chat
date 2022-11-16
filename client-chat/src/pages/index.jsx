@@ -1,53 +1,33 @@
-import React, { useState, useRef } from 'react'
-import { useEffect } from 'react'
-import { io } from 'socket.io-client'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
 import userAPI  from "../apis/user";
 
-const host = 'http://localhost:8000/'
-
 function Index() {
   const [userId, setUserId] = useState()
-  const { isMenuOpen, toggleMenu } = useSocketContext()
+  const { socket, isMenuOpen, toggleMenu } = useSocketContext()
 
-  const msg = []
+  const connectSocket = async () => {
+    // 開啟並連線
+    toggleMenu(true)
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     // 連線
-  //     socket.current.connect()
-  //     // 送出 userId
-  //     socket.current.emit("add-user", userId)
-  //     // 連接
-  //     socket.current.on("connect", () => {
-  //       console.log(socket.current.id)
-  //     })
-  //     // 離開
-  //     socket.current.on("disconnect", () => {
-  //       console.log(socket.current.disconnected)
-  //     })
-  //   }
-  // }, [userId, socket])
+    // uuid
+    const user = uuidv4()
 
-  // const connectSocket = async () => {
-  //   toggleMenu()
-
-  //   // uuid
-  //   const user = uuidv4()
-
-  //   // create User
-  //   const { data } = await userAPI.createUser(user)
+    // create User
+    const { data } = await userAPI.createUser(user)
  
-  //   if (data.status) {
-  //     setUserId(data.connectId)
-  //   }
-  // }
+    if (data.status) {
+      setUserId(data.connectId)
+      // 送出 userId
+      socket.emit("add-user", data.connectId)
+    }
+  }
 
   // const msgBtn = () => {
-  //   socket.current.volatile.emit('msg', 'hihihi', msg => {
+  //   socket.volatile.emit('msg', 'hihihi', msg => {
   //     console.log(msg)
   //   })
   // }
@@ -63,10 +43,8 @@ function Index() {
       <div className='container'>
         <h1>聊天吧</h1>
       </div>
-      <button className='startChat' onClick={() => toggleMenu(true)}>開始聊天</button>
-      <button className='startChat' onClick={() => toggleMenu(false)}>退出聊天</button>
-      {/* <button className='startChat' onClick={msgBtn}>送出訊息</button> */}
-      <Chat userId={userId} msg={msg} /> 
+      <button className='startChat' onClick={connectSocket}>開始聊天</button>
+      <Chat userId={userId} /> 
     </Container>
   )
 }

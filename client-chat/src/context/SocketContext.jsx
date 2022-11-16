@@ -3,7 +3,6 @@ import { useSocket } from '../hooks/useSocket';
 
 export const SocketContexts = createContext()
 
-
 export const SocketProvider = ({ children }) => {
   const [ isMenuOpen, setIsMenuOpen ] = useState(false)
   const host = 'http://localhost:8000/'
@@ -23,8 +22,6 @@ export const SocketProvider = ({ children }) => {
 
   // 監聽器
   const SocketListener = () => {
-    // 送出 userId
-    socket.emit("add-user", 'YellowCARD!!')
     // 連接
     socket.on("connect", () => {
       console.log(socket.id)
@@ -32,6 +29,10 @@ export const SocketProvider = ({ children }) => {
     // 離開
     socket.on("disconnect", () => {
       console.log(socket.disconnected)
+    })
+    // 接收訊息
+    socket.on("receive-msg", arrivalMsg => {
+      console.log('get', arrivalMsg)
     })
   }
 
@@ -42,7 +43,7 @@ export const SocketProvider = ({ children }) => {
   }
 
   return (
-    <SocketContexts.Provider value={{ isMenuOpen, toggleMenu, messages, setMessages }}>
+    <SocketContexts.Provider value={{ socket, isMenuOpen, toggleMenu, messages, setMessages }}>
       {children}
     </SocketContexts.Provider>
   )
