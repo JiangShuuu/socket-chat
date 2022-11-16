@@ -8,6 +8,7 @@ Icon?
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+.editorconfig
 
 # npm
 node_modules
