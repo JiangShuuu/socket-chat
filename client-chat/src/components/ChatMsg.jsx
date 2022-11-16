@@ -9,15 +9,15 @@ export default function ChatMsg() {
     <Container menu={isMenuOpen}>
       <div className="content">
         <div className="chatbox">
-          <p>123</p>
+          <p>ＧＯＧＯＧＯ</p>
           {messages.map((item, idx) => {
             return (
-              <p
+              <div
                 key={idx}
                 className={item.fromSelf ? 'text-right' : 'text-left'}
               >
-                {item.msg}
-              </p>
+                <p className="text">{item.msg}</p>
+              </div>
             )
           })}
         </div>
@@ -34,7 +34,7 @@ const Container = styled.div`
   opacity: ${(props) => (props.menu ? 1 : 0)};
   .content {
     max-width: 600px;
-    padding: 0 0 3.5rem 0;
+    padding: 0 0 4rem 0;
     margin: auto;
     border-radius: 20px 20px 0 0;
     background-color: #ffffffa2;
@@ -43,11 +43,21 @@ const Container = styled.div`
   .chatbox {
     margin: 0 2rem;
   }
+  .text {
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 0.5rem;
+    background: gray;
+    color: white;
+  }
   .text-left {
-    padding: 0.5rem 0;
+    display: flex;
+    justify-content: start;
+    padding: 0.25rem 0;
   }
   .text-right {
-    padding: 0.5rem 0;
-    text-align: right;
+    display: flex;
+    justify-content: end;
+    padding: 0.25rem 0;
   }
 `
