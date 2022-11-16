@@ -4,58 +4,53 @@ import { io } from 'socket.io-client'
 import styled from "styled-components"
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
-import { MenuProvider, useMenuToggleContext } from '../context/MenuContext'
+import { SocketProvider, useSocketContext } from '../context/SocketContext'
 import userAPI  from "../apis/user";
 
 const host = 'http://localhost:8000/'
 
 function Index() {
   const [userId, setUserId] = useState()
-  const { isMenuOpen, toggleMenu } = useMenuToggleContext()
-  const socket = useRef(null)
-  
-  socket.current = io(host, {
-    autoConnect: false
-  })
+  const { isMenuOpen, toggleMenu } = useSocketContext()
 
   const msg = []
 
-  useEffect(() => {
-    if (userId) {
-      // 連線
-      socket.current.connect()
-      // 送出 userId
-      socket.current.emit("add-user", userId)
-      // 連接
-      socket.current.on("connect", () => {
-        console.log(socket.current.id)
-      })
-      // 離開
-      socket.current.on("disconnect", () => {
-        console.log(socket.current.disconnected)
-      })
-    }
-  }, [userId, socket])
+  // useEffect(() => {
+  //   if (userId) {
+  //     // 連線
+  //     socket.current.connect()
+  //     // 送出 userId
+  //     socket.current.emit("add-user", userId)
+  //     // 連接
+  //     socket.current.on("connect", () => {
+  //       console.log(socket.current.id)
+  //     })
+  //     // 離開
+  //     socket.current.on("disconnect", () => {
+  //       console.log(socket.current.disconnected)
+  //     })
+  //   }
+  // }, [userId, socket])
 
-  const connectSocket = async () => {
-    toggleMenu()
+  // const connectSocket = async () => {
+  //   toggleMenu()
 
-    // uuid
-    const user = uuidv4()
+  //   // uuid
+  //   const user = uuidv4()
 
-    // create User
-    const { data } = await userAPI.createUser(user)
+  //   // create User
+  //   const { data } = await userAPI.createUser(user)
  
-    if (data.status) {
-      setUserId(data.connectId)
-    }
-  }
+  //   if (data.status) {
+  //     setUserId(data.connectId)
+  //   }
+  // }
 
-  const msgBtn = () => {
-    socket.current.volatile.emit('msg', 'hihihi', msg => {
-      console.log(msg)
-    })
-  }
+  // const msgBtn = () => {
+  //   socket.current.volatile.emit('msg', 'hihihi', msg => {
+  //     console.log(msg)
+  //   })
+  // }
 
   // const addRoom = () => {
   //   socket.current.emit('join-room', '1234', msg => {
@@ -68,18 +63,19 @@ function Index() {
       <div className='container'>
         <h1>聊天吧</h1>
       </div>
-      <button className='startChat' onClick={connectSocket}>開始聊天</button>
-      <button className='startChat' onClick={msgBtn}>送出訊息</button>
-      <Chat socket={socket} userId={userId} msg={msg} /> 
+      <button className='startChat' onClick={() => toggleMenu(true)}>開始聊天</button>
+      <button className='startChat' onClick={() => toggleMenu(false)}>退出聊天</button>
+      {/* <button className='startChat' onClick={msgBtn}>送出訊息</button> */}
+      <Chat userId={userId} msg={msg} /> 
     </Container>
   )
 }
 
 export default function ContextIndex () {
   return (
-    <MenuProvider>
+    <SocketProvider>
       <Index />
-    </MenuProvider>
+    </SocketProvider>
   )
 }
 

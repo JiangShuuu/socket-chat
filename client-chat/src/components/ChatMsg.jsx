@@ -2,16 +2,16 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { v4 as uuidv4 } from "uuid";
-import { useMenuToggleContext } from '../context/MenuContext'
+import { useSocketContext } from '../context/SocketContext'
 
 export default function ChatMsg({ socket }) {
-  const { isMenuOpen, messages } = useMenuToggleContext()
+  const { isMenuOpen, messages } = useSocketContext()
   const [ arrMsg, setArrMsg ] = useState([])
   
   // 接收訊息
-  socket.current.on("receive-msg", arrivalMsg => {
-    console.log('get', arrivalMsg)
-  })
+  // socket.current.on("receive-msg", arrivalMsg => {
+  //   console.log('get', arrivalMsg)
+  // })
 
   // console.log(msg)
 
