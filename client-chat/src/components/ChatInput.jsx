@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
-import userAPI  from "../apis/user";
-import { useState } from 'react';
+import userAPI from '../apis/user'
+import { useState } from 'react'
 
 export default function ChatInput({ userId }) {
   const { socket, isMenuOpen, toggleMenu, setMessages } = useSocketContext()
-  const [msg, setMsg] = useState("")
+  const [msg, setMsg] = useState('')
 
   const leaveBtn = async () => {
     // 加判斷式做另外的function
@@ -16,26 +16,30 @@ export default function ChatInput({ userId }) {
   }
 
   const sendChat = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (msg.length > 0) {
-      socket.emit("send-msg", msg)
-      setMessages((prev) => [...prev, { msg }] )
-      setMsg("");
+      socket.emit('send-msg', msg)
+      setMessages((prev) => [...prev, { fromSelf: true, msg }])
+      setMsg('')
     }
-  };
+  }
 
   return (
     <InputContainer menu={isMenuOpen}>
-      <div className='box'>
+      <div className="box">
         <form className="input-container" onSubmit={(event) => sendChat(event)}>
-          <button className='inputBtn' onClick={leaveBtn}>離開</button>
+          <div className="inputBtn" onClick={leaveBtn}>
+            離開
+          </div>
           <input
             type="text"
             placeholder="聊些什麼吧？"
             onChange={(e) => setMsg(e.target.value)}
             value={msg}
           />
-          <button type="submit" className='inputBtn'>傳送</button>
+          <button type="submit" className="inputBtn">
+            傳送
+          </button>
         </form>
       </div>
     </InputContainer>
@@ -51,7 +55,7 @@ const InputContainer = styled.div`
     align-items: center;
     background-color: #e1e0e0;
     height: 3rem;
-    opacity: ${props => props.menu ? 1 : 0};
+    opacity: ${(props) => (props.menu ? 1 : 0)};
     transition: 0.5s;
   }
   .inputBtn {
@@ -67,6 +71,7 @@ const InputContainer = styled.div`
   }
   .input-container {
     display: flex;
+    align-items: center;
     width: 100%;
   }
   input {

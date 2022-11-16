@@ -7,14 +7,18 @@ export default function ChatMsg() {
 
   return (
     <Container menu={isMenuOpen}>
-      <div className='content'>
-        <div className='chatbox'>
+      <div className="content">
+        <div className="chatbox">
           <p>123</p>
-          {/* {arrMsg.map((item, idx) => {
-            return <p key={idx} className='text'>{item.msg}</p>
-          })} */}
           {messages.map((item, idx) => {
-            return <p key={idx} className='text-right'>{item.msg}</p>
+            return (
+              <p
+                key={idx}
+                className={item.fromSelf ? 'text-right' : 'text-left'}
+              >
+                {item.msg}
+              </p>
+            )
           })}
         </div>
       </div>
@@ -27,7 +31,7 @@ const Container = styled.div`
   bottom: 0px;
   width: 100%;
   transition: 0.5s;
-  opacity: ${props => props.menu ? 1 : 0};
+  opacity: ${(props) => (props.menu ? 1 : 0)};
   .content {
     max-width: 600px;
     padding: 0 0 3.5rem 0;
@@ -39,7 +43,7 @@ const Container = styled.div`
   .chatbox {
     margin: 0 2rem;
   }
-  .text {
+  .text-left {
     padding: 0.5rem 0;
   }
   .text-right {
