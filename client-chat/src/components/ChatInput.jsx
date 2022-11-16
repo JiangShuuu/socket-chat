@@ -27,8 +27,8 @@ export default function ChatInput({ userId }) {
   return (
     <InputContainer menu={isMenuOpen}>
       <div className='box'>
-        <button className='inputBtn' onClick={leaveBtn}>離開</button>
         <form className="input-container" onSubmit={(event) => sendChat(event)}>
+          <button className='inputBtn' onClick={leaveBtn}>離開</button>
           <input
             type="text"
             placeholder="聊些什麼吧？"
@@ -65,12 +65,17 @@ const InputContainer = styled.div`
   .inputBtn:hover {
     color: #000000;
   }
+  .input-container {
+    display: flex;
+    width: 100%;
+  }
   input {
     all: unset;
     background-color: white;
     text-indent: 1rem;
     height: 2.25rem;
-    flex: 1 1 0%;
+    width: 100%;
+    flex: 1 1 0;
     border-radius: 2rem;
   }
 `
