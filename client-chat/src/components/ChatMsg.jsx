@@ -42,6 +42,11 @@ const Container = styled.div`
   }
   .chatbox {
     margin: 0 2rem;
+    max-height: 80vh;
+    overflow: scroll;
+  }
+  .chatbox::-webkit-scrollbar {
+    display: none;
   }
   .text {
     border: 1px solid;
