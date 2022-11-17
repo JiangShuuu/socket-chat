@@ -18,10 +18,12 @@ export const SocketProvider = ({ children }) => {
       SocketListener()
     } else {
       socket.close()
+      socket.off()
       setMessages([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen, socket])
+
   // 監聽器
   const SocketListener = () => {
     // 連接
