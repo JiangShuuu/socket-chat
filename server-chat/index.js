@@ -31,11 +31,16 @@ const io = socket(server, {
   }
 })
 
+
 // 全域陣列
+// 線上user
 global.onlineUsers = new Map()
+// 線上房間
+global.onlineRooms = []
 
 io.on("connection", (socket) => {
   console.log(socket.id)
+  const ids = io.allSockets();
 
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id)
@@ -44,19 +49,25 @@ io.on("connection", (socket) => {
 
   socket.on("send-msg", (msg, room) => {
     if (!room) {
-      socket.broadcast.emit("receive-msg", msg)
+      socket.emit("receive-msg", msg)
       console.log('other', msg)
     } else {
       socket.to(room).emit("receive-msg", msg)
-      console.log('new', msg)
+      console.log('new', room, msg)
     }
   })
 
-  // socket.on("join-room", (room, cb) => {
-  //   console.log('join', room)
-  //   socket.join(room)
-  //   cb(`Joined ${room}`)
-  // })
+  // 加入或創建(改map)
+  socket.on("join-room", (room, cb) => {
+    if (onlineRooms.length >= 1 ) {
+      socket.join(onlineRooms[0])
+      cb(onlineRooms[0])
+    } else {
+      socket.join(room)
+      onlineRooms.push(room)
+      cb(room)
+    }
+  })
 
   socket.on("disconnect", (reason) => {
     console.log(reason, socket.id)
@@ -69,7 +80,3 @@ io.on("connection", (socket) => {
     socket.disconnect()
   })
 })
-
-// io.on('forceDisconnect', () => {
-//   io.disconnect();
-// });

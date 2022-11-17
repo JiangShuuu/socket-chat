@@ -5,7 +5,8 @@ import userAPI from '../apis/user'
 import { useState } from 'react'
 
 export default function ChatInput({ userId }) {
-  const { socket, isMenuOpen, toggleMenu, setMessages } = useSocketContext()
+  const { socket, isMenuOpen, toggleMenu, setMessages, room } =
+    useSocketContext()
   const [msg, setMsg] = useState('')
 
   const leaveBtn = async () => {
@@ -17,7 +18,11 @@ export default function ChatInput({ userId }) {
 
   const sendChat = (event) => {
     event.preventDefault()
-    if (msg.length > 0) {
+    if (room && msg.length > 0) {
+      socket.emit('send-msg', msg, room)
+      setMessages((prev) => [...prev, { fromSelf: true, msg }])
+      setMsg('')
+    } else if (msg.length > 0) {
       socket.emit('send-msg', msg)
       setMessages((prev) => [...prev, { fromSelf: true, msg }])
       setMsg('')

@@ -6,6 +6,8 @@ export const SocketContexts = createContext()
 export const SocketProvider = ({ children }) => {
   const [messages, setMessages] = useState([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [room, setRoom] = useState('')
+
   const host = 'http://localhost:8000/'
   const socket = useSocket(host, {
     autoConnect: false,
@@ -47,7 +49,15 @@ export const SocketProvider = ({ children }) => {
 
   return (
     <SocketContexts.Provider
-      value={{ socket, isMenuOpen, toggleMenu, messages, setMessages }}
+      value={{
+        socket,
+        isMenuOpen,
+        toggleMenu,
+        messages,
+        setMessages,
+        room,
+        setRoom,
+      }}
     >
       {children}
     </SocketContexts.Provider>

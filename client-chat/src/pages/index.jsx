@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import styled from "styled-components"
+import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
-import userAPI  from "../apis/user";
+import userAPI from '../apis/user'
 
 function Index() {
   const [userId, setUserId] = useState()
-  const { socket, isMenuOpen, toggleMenu } = useSocketContext()
+  const { socket, isMenuOpen, toggleMenu, setRoom } = useSocketContext()
 
   const connectSocket = async () => {
     // 開啟並連線
@@ -18,38 +18,37 @@ function Index() {
 
     // create User
     const { data } = await userAPI.createUser(user)
- 
+
     if (data.status) {
       setUserId(data.connectId)
       // 送出 userId
-      socket.emit("add-user", data.connectId)
+      socket.emit('add-user', data.connectId)
+      // 加入或創建房間
+      addRoom()
     }
   }
 
-  // const msgBtn = () => {
-  //   socket.volatile.emit('msg', 'hihihi', msg => {
-  //     console.log(msg)
-  //   })
-  // }
-
-  // const addRoom = () => {
-  //   socket.current.emit('join-room', '1234', msg => {
-  //     console.log(msg)
-  //   })
-  // }
+  const addRoom = () => {
+    socket.emit('join-room', socket.id, (msg) => {
+      console.log('room', msg)
+      setRoom(msg)
+    })
+  }
 
   return (
     <Container menu={isMenuOpen}>
-      <div className='container'>
+      <div className="container">
         <h1>聊天吧</h1>
       </div>
-      <button className='startChat' onClick={connectSocket}>開始聊天</button>
-      <Chat userId={userId} /> 
+      <button className="startChat" onClick={connectSocket}>
+        開始聊天
+      </button>
+      <Chat userId={userId} />
     </Container>
   )
 }
 
-export default function ContextIndex () {
+export default function ContextIndex() {
   return (
     <SocketProvider>
       <Index />
@@ -70,12 +69,12 @@ const Container = styled.div`
     h1 {
       color: #07688b;
       font-size: 4rem;
-      opacity: ${props => props.menu ? 0.5 : 1};
-      transition: .5s;
+      opacity: ${(props) => (props.menu ? 0.5 : 1)};
+      transition: 0.5s;
     }
   }
   .startChat {
-    all:unset;
+    all: unset;
     border: 1px solid #07688b;
     padding: 10px;
     font-size: 2rem;
@@ -83,7 +82,7 @@ const Container = styled.div`
     cursor: pointer;
     z-index: 99;
     transition: 0.25s;
-    opacity: ${props => props.menu ? 0 : 1};
+    opacity: ${(props) => (props.menu ? 0 : 1)};
   }
   .startChat:hover {
     color: white;
