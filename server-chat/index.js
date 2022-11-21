@@ -36,7 +36,7 @@ const io = socket(server, {
 // 線上user
 global.onlineUsers = new Map()
 // 線上房間
-global.onlineRooms = []
+global.onlineRooms = new Map()
 
 io.on("connection", (socket) => {
   console.log(socket.id)
@@ -58,24 +58,41 @@ io.on("connection", (socket) => {
   })
 
   // 加入或創建(改map)
-  socket.on("join-room", (room, cb) => {
-    if (onlineRooms.length >= 1 ) {
-      socket.join(onlineRooms[0])
-      cb(onlineRooms[0])
+  socket.on("join-room", (roomId, cb) => {
+    // 確定目前房間人數, 
+    // 如果房間數大於一則加入最近的
+    // 如果沒有房間則創建一個
+
+    // socket Map, 每次連線都會有一間, join也在這里
+    const ioRoom = io.sockets.adapter.rooms
+    // 展開成 array
+    const roomArr = [...onlineRooms.keys()]
+
+    if (roomArr.length >= 1) {
+      const findRoom = roomArr.find(item => ioRoom.get(item).size < 2)
+      console.log('getRoommm', findRoom)
+      socket.join(findRoom)
+      cb(findRoom)
     } else {
-      socket.join(room)
-      onlineRooms.push(room)
-      cb(room)
+      socket.join(roomId)
+      onlineRooms.set(roomId, socket.id)
+      cb(roomId)
     }
   })
 
   socket.on("disconnect", (reason) => {
-    console.log(reason, socket.id)
+    
     onlineUsers.forEach((value, key) => {
       if (socket.id === value) {
         onlineUsers.delete(key)
       }
     })
+    onlineRooms.forEach((value, key) => {
+      if (socket.id === value) {
+        onlineRooms.delete(key)
+      }
+    })
+
     console.log('onlineUsers Leave', onlineUsers)
     socket.disconnect()
   })

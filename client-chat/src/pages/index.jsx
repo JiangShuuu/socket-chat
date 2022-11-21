@@ -29,7 +29,7 @@ function Index() {
   }
 
   const addRoom = () => {
-    socket.emit('join-room', socket.id, (msg) => {
+    socket.emit('join-room', `${socket.id}_room`, (msg) => {
       console.log('room', msg)
       setRoom(msg)
     })
