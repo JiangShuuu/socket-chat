@@ -70,7 +70,12 @@ io.on("connection", (socket) => {
 
     if (roomArr.length >= 1) {
       const findRoom = roomArr.find(item => ioRoom.get(item).size < 2)
-      console.log('getRoommm', findRoom)
+      if (!findRoom) {
+        socket.join(roomId)
+        onlineRooms.set(roomId, socket.id)
+        cb(roomId)
+        return
+      }
       socket.join(findRoom)
       cb(findRoom)
     } else {
@@ -87,12 +92,13 @@ io.on("connection", (socket) => {
         onlineUsers.delete(key)
       }
     })
+    // 刪除 room 需修改
     onlineRooms.forEach((value, key) => {
       if (socket.id === value) {
         onlineRooms.delete(key)
       }
     })
-
+    console.log('onlineRooms leave', onlineRooms)
     console.log('onlineUsers Leave', onlineUsers)
     socket.disconnect()
   })
