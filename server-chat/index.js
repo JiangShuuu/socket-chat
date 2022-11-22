@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
         return
       }
       socket.join(findRoom)
-      socket.to(findRoom).emit('start-connect', '聊天吧小ＧＧ')
+      socket.to(findRoom).emit('start-connect', 'startChat')
       cb({id: findRoom, status: 'success'})
     } else {
       socket.join(roomId)
