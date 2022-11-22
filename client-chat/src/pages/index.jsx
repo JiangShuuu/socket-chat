@@ -7,7 +7,8 @@ import userAPI from '../apis/user'
 
 function Index() {
   const [userId, setUserId] = useState()
-  const { socket, isMenuOpen, toggleMenu, setRoom } = useSocketContext()
+  const { socket, isMenuOpen, toggleMenu, setRoom, setStart } =
+    useSocketContext()
 
   const connectSocket = async () => {
     // 開啟並連線
@@ -31,7 +32,8 @@ function Index() {
   const addRoom = () => {
     socket.emit('join-room', `${socket.id}_room`, (msg) => {
       console.log('room', msg)
-      setRoom(msg)
+      if (msg.status === 'success') setStart(true)
+      setRoom(msg.id)
     })
   }
 

@@ -5,6 +5,7 @@ export const SocketContexts = createContext()
 
 export const SocketProvider = ({ children }) => {
   const [messages, setMessages] = useState([])
+  const [start, setStart] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [room, setRoom] = useState('')
 
@@ -41,6 +42,11 @@ export const SocketProvider = ({ children }) => {
       console.log('get', arrivalMsg)
       setMessages((prev) => [...prev, { fromSelf: false, msg: arrivalMsg }])
     })
+    // 可以聊天與否
+    socket.on('start-connect', (msg) => {
+      console.log('connectMsg', msg)
+      setStart(true)
+    })
   }
   // 開關
   const toggleMenu = (value) => {
@@ -57,6 +63,8 @@ export const SocketProvider = ({ children }) => {
         setMessages,
         room,
         setRoom,
+        start,
+        setStart,
       }}
     >
       {children}

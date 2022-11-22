@@ -73,15 +73,16 @@ io.on("connection", (socket) => {
       if (!findRoom) {
         socket.join(roomId)
         onlineRooms.set(roomId, socket.id)
-        cb(roomId)
+        cb({id: roomId, status: 'onnecting'})
         return
       }
       socket.join(findRoom)
-      cb(findRoom)
+      socket.to(findRoom).emit('start-connect', '聊天吧小ＧＧ')
+      cb({id: findRoom, status: 'success'})
     } else {
       socket.join(roomId)
       onlineRooms.set(roomId, socket.id)
-      cb(roomId)
+      cb({id: roomId, status: 'onnecting'})
     }
   })
 

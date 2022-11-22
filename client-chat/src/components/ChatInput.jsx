@@ -5,7 +5,7 @@ import userAPI from '../apis/user'
 import { useState } from 'react'
 
 export default function ChatInput({ userId }) {
-  const { socket, isMenuOpen, toggleMenu, setMessages, room } =
+  const { socket, isMenuOpen, toggleMenu, setMessages, room, start } =
     useSocketContext()
   const [msg, setMsg] = useState('')
 
@@ -42,7 +42,7 @@ export default function ChatInput({ userId }) {
             onChange={(e) => setMsg(e.target.value)}
             value={msg}
           />
-          <button type="submit" className="inputBtn">
+          <button type="submit" className="inputBtn" disabled={!start}>
             傳送
           </button>
         </form>
@@ -73,6 +73,10 @@ const InputContainer = styled.div`
   }
   .inputBtn:hover {
     color: #000000;
+  }
+  .inputBtn:disabled {
+    cursor: none;
+    color: #bcbcbc;
   }
   .input-container {
     display: flex;

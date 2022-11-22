@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
 
 export default function ChatMsg() {
-  const { isMenuOpen, messages } = useSocketContext()
+  const { isMenuOpen, messages, start } = useSocketContext()
 
   return (
     <Container menu={isMenuOpen}>
       <div className="content">
         <div className="chatbox">
-          <p>ＧＯＧＯＧＯ</p>
+          {start ? <p>開始聊天！！</p> : <p>找尋中...</p>}
+
           {messages.map((item, idx) => {
             return (
               <div
