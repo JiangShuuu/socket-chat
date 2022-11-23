@@ -72,17 +72,18 @@ io.on("connection", (socket) => {
       const findRoom = roomArr.find(item => ioRoom.get(item).size < 2)
       if (!findRoom) {
         socket.join(roomId)
-        onlineRooms.set(roomId, socket.id)
-        cb({id: roomId, status: 'onnecting'})
+        onlineRooms.set(roomId, new Set([socket.id]))
+        cb({id: roomId, status: 'connecting'})
         return
       }
       socket.join(findRoom)
       socket.to(findRoom).emit('start-connect', 'startChat')
+      onlineRooms.get(findRoom).add(socket.id)
       cb({id: findRoom, status: 'success'})
     } else {
       socket.join(roomId)
-      onlineRooms.set(roomId, socket.id)
-      cb({id: roomId, status: 'onnecting'})
+      onlineRooms.set(roomId, new Set([socket.id]))
+      cb({id: roomId, status: 'connecting'})
     }
   })
 
