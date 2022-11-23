@@ -8,6 +8,7 @@ export const SocketProvider = ({ children }) => {
   const [start, setStart] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [room, setRoom] = useState('')
+  const [end, setEnd] = useState(false)
 
   const host = 'http://localhost:8000/'
   const socket = useSocket(host, {
@@ -45,10 +46,14 @@ export const SocketProvider = ({ children }) => {
     // 可以聊天與否
     socket.on('start-connect', (msg) => {
       console.log('connectMsg', msg)
-      setStart(true)
+      setTimeout(() => {
+        setStart(true)
+      }, 1000)
     })
+    // 離開聊天
     socket.on('connect-end', (msg) => {
       console.log('end', msg)
+      setEnd(true)
       setStart(false)
     })
   }
@@ -69,6 +74,8 @@ export const SocketProvider = ({ children }) => {
         setRoom,
         start,
         setStart,
+        end,
+        setEnd,
       }}
     >
       {children}

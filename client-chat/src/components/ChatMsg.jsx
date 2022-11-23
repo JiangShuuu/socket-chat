@@ -3,24 +3,30 @@ import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
 
 export default function ChatMsg() {
-  const { isMenuOpen, messages, start } = useSocketContext()
+  const { isMenuOpen, messages, start, end } = useSocketContext()
 
   return (
     <Container menu={isMenuOpen}>
       <div className="content">
         <div className="chatbox">
-          {start ? <p>開始聊天！！</p> : <p>找尋中...</p>}
+          {end ? (
+            <p>對方已離開聊天室！</p>
+          ) : (
+            <>
+              {start ? <p>開始聊天！！</p> : <p>找尋中...</p>}
 
-          {messages.map((item, idx) => {
-            return (
-              <div
-                key={idx}
-                className={item.fromSelf ? 'text-right' : 'text-left'}
-              >
-                <p className="text">{item.msg}</p>
-              </div>
-            )
-          })}
+              {messages.map((item, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className={item.fromSelf ? 'text-right' : 'text-left'}
+                  >
+                    <p className="text">{item.msg}</p>
+                  </div>
+                )
+              })}
+            </>
+          )}
         </div>
       </div>
     </Container>
