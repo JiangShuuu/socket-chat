@@ -31,7 +31,6 @@ const io = socket(server, {
   }
 })
 
-
 // 全域陣列
 // 線上user
 global.onlineUsers = new Map()
