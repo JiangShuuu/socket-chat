@@ -59,10 +59,6 @@ io.on("connection", (socket) => {
 
   // 加入或創建(改map)
   socket.on("join-room", (roomId, cb) => {
-    // 確定目前房間人數, 
-    // 如果房間數大於一則加入最近的
-    // 如果沒有房間則創建一個
-
     // socket Map, 每次連線都會有一間, join也在這里
     const ioRoom = io.sockets.adapter.rooms
     // 展開成 array
@@ -88,12 +84,13 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", (reason) => {
+    // 刪除 onlineUser 
     onlineUsers.forEach((value, key) => {
       if (socket.id === value) {
         onlineUsers.delete(key)
       }
     })
-    // 刪除 room 需修改
+    // 刪除 room & 送出離開消息
     onlineRooms.forEach((value, key) => {
       if (value.has(socket.id)) {
         socket.to(key).emit('connect-end', 'chatEnd')
