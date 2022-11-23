@@ -88,7 +88,6 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", (reason) => {
-    
     onlineUsers.forEach((value, key) => {
       if (socket.id === value) {
         onlineUsers.delete(key)
@@ -96,7 +95,8 @@ io.on("connection", (socket) => {
     })
     // 刪除 room 需修改
     onlineRooms.forEach((value, key) => {
-      if (socket.id === value) {
+      if (value.has(socket.id)) {
+        socket.to(key).emit('connect-end', 'chatEnd')
         onlineRooms.delete(key)
       }
     })

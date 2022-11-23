@@ -47,6 +47,10 @@ export const SocketProvider = ({ children }) => {
       console.log('connectMsg', msg)
       setStart(true)
     })
+    socket.on('connect-end', (msg) => {
+      console.log('end', msg)
+      setStart(false)
+    })
   }
   // 開關
   const toggleMenu = (value) => {
