@@ -4,6 +4,7 @@ import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
 import userAPI from '../apis/user'
+import LeaveModal from '../components/LeaveModal'
 
 function Index() {
   const [userId, setUserId] = useState()
@@ -89,7 +90,7 @@ const Container = styled.div`
     font-size: 2rem;
     border-radius: 10px;
     cursor: pointer;
-    z-index: 99;
+    z-index: ${(props) => (props.menu ? -99 : 99)};
     transition: 0.25s;
     opacity: ${(props) => (props.menu ? 0 : 1)};
   }
