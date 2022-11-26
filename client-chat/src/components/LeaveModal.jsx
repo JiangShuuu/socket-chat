@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function LeaveModal() {
+export default function LeaveModal({ leave }) {
   return (
     <Modal>
       <section className="box"></section>
@@ -9,7 +9,7 @@ export default function LeaveModal() {
         <h3>確定要離開嗎？</h3>
         <h4>離開將清除雙方的對話紀錄！</h4>
         <div className="btn_area">
-          <button>取消</button>
+          <button onClick={() => leave(false)}>取消</button>
           <button>確定離開</button>
         </div>
       </div>

@@ -3,11 +3,13 @@ import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
 import userAPI from '../apis/user'
 import { useState } from 'react'
+import LeaveModal from '../components/LeaveModal'
 
 export default function ChatInput({ userId }) {
   const { socket, isMenuOpen, toggleMenu, setMessages, room, start } =
     useSocketContext()
   const [msg, setMsg] = useState('')
+  const [model, setModel] = useState(false)
 
   const leaveBtn = async () => {
     // 加判斷式做另外的function
@@ -30,24 +32,30 @@ export default function ChatInput({ userId }) {
   }
 
   return (
-    <InputContainer menu={isMenuOpen}>
-      <div className="box">
-        <form className="input-container" onSubmit={(event) => sendChat(event)}>
-          <div className="inputBtn" onClick={leaveBtn}>
-            離開
-          </div>
-          <input
-            type="text"
-            placeholder="聊些什麼吧？"
-            onChange={(e) => setMsg(e.target.value)}
-            value={msg}
-          />
-          <button type="submit" className="inputBtn" disabled={!start}>
-            傳送
-          </button>
-        </form>
-      </div>
-    </InputContainer>
+    <>
+      {model && <LeaveModal leave={setModel} />}
+      <InputContainer menu={isMenuOpen}>
+        <div className="box">
+          <form
+            className="input-container"
+            onSubmit={(event) => sendChat(event)}
+          >
+            <div className="inputBtn" onClick={() => setModel(true)}>
+              離開
+            </div>
+            <input
+              type="text"
+              placeholder="聊些什麼吧？"
+              onChange={(e) => setMsg(e.target.value)}
+              value={msg}
+            />
+            <button type="submit" className="inputBtn" disabled={!start}>
+              傳送
+            </button>
+          </form>
+        </div>
+      </InputContainer>
+    </>
   )
 }
 

@@ -4,7 +4,6 @@ import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
 import userAPI from '../apis/user'
-import LeaveModal from '../components/LeaveModal'
 
 function Index() {
   const [userId, setUserId] = useState()
