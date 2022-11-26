@@ -16,6 +16,7 @@ export default function ChatInput({ userId }) {
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
     toggleMenu(false)
+    setModel(false)
   }
 
   const sendChat = (event) => {
@@ -33,7 +34,7 @@ export default function ChatInput({ userId }) {
 
   return (
     <>
-      {model && <LeaveModal leave={setModel} />}
+      {model && <LeaveModal leaveModel={setModel} leaveAPI={leaveBtn} />}
       <InputContainer menu={isMenuOpen}>
         <div className="box">
           <form
