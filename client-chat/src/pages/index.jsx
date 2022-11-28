@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
@@ -31,6 +31,24 @@ function Index() {
       setEnd(false)
     }
   }
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const handleTabClose = (event) => {
+      event.preventDefault()
+
+      console.log('beforeunload event triggered')
+
+      return (event.returnValue = 'Are you sure you want to exit?')
+    }
+
+    window.addEventListener('beforeunload', handleTabClose)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleTabClose)
+    }
+  }, [isMenuOpen])
 
   const addRoom = () => {
     socket.emit('join-room', `${socket.id}_room`, (msg) => {
