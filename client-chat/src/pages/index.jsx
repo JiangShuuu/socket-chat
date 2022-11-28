@@ -38,8 +38,6 @@ function Index() {
     const handleTabClose = (event) => {
       event.preventDefault()
 
-      console.log('beforeunload event triggered')
-
       return (event.returnValue = 'Are you sure you want to exit?')
     }
 
