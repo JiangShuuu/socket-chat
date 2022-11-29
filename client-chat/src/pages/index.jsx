@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
+import { WebRtcProvider } from '../context/WebRtcContext'
 import userAPI from '../apis/user'
 
 function Index() {
@@ -76,7 +77,9 @@ function Index() {
 export default function ContextIndex() {
   return (
     <SocketProvider>
-      <Index />
+      <WebRtcProvider>
+        <Index />
+      </WebRtcProvider>
     </SocketProvider>
   )
 }
