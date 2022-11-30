@@ -26,7 +26,7 @@ const server = app.listen(8877, () => {
 
 const io = socket(server, {
   cors: {
-    origin: "https://profile1.jiangshuuu.com/",
+    origin: "https://profile1.jiangshuuu.com",
     credentials: true
   }
 })
