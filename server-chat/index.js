@@ -11,7 +11,7 @@ app.use(express.json())
 
 app.use("/api", userRoutes)
 
-mongoose.connect(process.env.MONGO_URL, {
+mongoose.connect('mongodb://localhost:27017', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -20,13 +20,13 @@ mongoose.connect(process.env.MONGO_URL, {
   console.log(err.message)
 })
 
-const server = app.listen(process.env.PORT, () => {
-  console.log(`Server started on Port ${process.env.PORT}`)
+const server = app.listen(8877, () => {
+  console.log(`Server started on Port 8877`)
 })
 
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://profile1.jiangshuuu.com/",
     credentials: true
   }
 })
