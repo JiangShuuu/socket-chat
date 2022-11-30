@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   const [room, setRoom] = useState('')
   const [end, setEnd] = useState(false)
 
-  const host = 'http://localhost:8000/'
+  const host = 'https://express1.jiangshuuu.com/'
   const socket = useSocket(host, {
     autoConnect: false,
   })

@@ -1,5 +1,5 @@
 import axios from "axios";
-const host = 'http://localhost:8000'
+const host = 'https://express1.jiangshuuu.com'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
