@@ -37,7 +37,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./server-chat
           push: true
           platforms: linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat_api:1.0
