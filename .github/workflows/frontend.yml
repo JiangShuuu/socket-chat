@@ -14,6 +14,7 @@ jobs:
 
       - name: create env file
         run: |
+          cd client-chat
           touch .env
           echo REACT_APP_APIURL=${{ secrets.REACT_APP_APIURL }} >> .env
 
