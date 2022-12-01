@@ -26,6 +26,7 @@ jobs:
         run: |
           cd client-chat
           npm install
+          npm run build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
