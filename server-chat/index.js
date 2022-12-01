@@ -1,17 +1,18 @@
+require('dotenv').config()
 const express = require("express")
-require("dotenv").config()
 const cors = require("cors")
 const mongoose = require("mongoose")
 const app = express()
 const socket = require("socket.io")
 const userRoutes = require("./routes/userRoutes")
-
+const PORT = process.env.PORT || 8000
+const MONGODB = process.env.MONGO_URL
 app.use(cors())
 app.use(express.json())
 
 app.use("/api", userRoutes)
 
-mongoose.connect('mongodb://localhost:27017', {
+mongoose.connect(MONGODB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -20,13 +21,13 @@ mongoose.connect('mongodb://localhost:27017', {
   console.log(err.message)
 })
 
-const server = app.listen(8877, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server started on Port 8877`)
 })
 
 const io = socket(server, {
   cors: {
-    origin: "https://profile1.jiangshuuu.com",
+    origin: process.env.CORS_URL,
     credentials: true
   }
 })
