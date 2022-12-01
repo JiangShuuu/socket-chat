@@ -1,5 +1,5 @@
 import axios from "axios";
-const host = 'https://express1.jiangshuuu.com'
+const host = process.env.REACT_APP_APIURL
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
