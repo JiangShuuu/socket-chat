@@ -1,10 +1,9 @@
-name: Build and Deploy to Cloud Run
+name: ChatBackEnd Build and Deploy
 
 on:
   push:
     branches:
     - backend
-
 
 jobs:   
   docker:
@@ -12,15 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: getIn BackEnd
-        run: cd server-chat
-
       - name: Use Node.js Install
         uses: actions/setup-node@v3
         with:
           node-version: 14
-
-      - run: npm install
+    
+      - name: cd file and install
+        run: |
+          cd server-chat
+          npm install
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -37,7 +36,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ./server-chat
+          context: .
+          file: ./server-chat/Dockerfile
           push: true
           platforms: linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat_api:1.0

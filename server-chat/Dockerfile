@@ -2,7 +2,7 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY /server-chat .
 
 EXPOSE 8877
 
