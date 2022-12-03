@@ -57,9 +57,12 @@ export const WebRtcProvider = ({ children }) => {
       })
     } else {
       myVideo.current.srcObject = null
-      // connectionRef.current.destroy()
-
-      // window.location.reload()
+      // 關閉視訊
+      if (stream) {
+        stream.getTracks().forEach(function (track) {
+          track.stop()
+        })
+      }
       console.log('關關關')
     }
 
@@ -77,8 +80,6 @@ export const WebRtcProvider = ({ children }) => {
     })
 
     peer.on('stream', (currentStream) => {
-      // wip
-      console.log('接聽者者signal', currentStream)
       userVideo.current.srcObject = currentStream
     })
 
@@ -95,8 +96,6 @@ export const WebRtcProvider = ({ children }) => {
         userToCall: talker,
         signalData: data,
         from: me,
-        // from: me,
-        // name,
       })
     })
 
@@ -105,21 +104,18 @@ export const WebRtcProvider = ({ children }) => {
     })
 
     socket.on('callAccepted', (signal) => {
-      console.log('撥打者signal', signal)
       setCallAccepted(true)
-      // wip
       peer.signal(signal)
     })
 
     connectionRef.current = peer
   }
 
+  //  掛掉二次打 待解
+
   const leaveCall = () => {
     setCallEnded(true)
-
     connectionRef.current.destroy()
-
-    window.location.reload()
   }
 
   return (

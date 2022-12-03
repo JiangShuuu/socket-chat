@@ -98,6 +98,7 @@ function Index() {
         </div>
       )}
       <button onClick={() => callUser()}>Call</button>
+      <button onClick={() => leaveCall()}>leaveCall</button>
       <div className="container">
         <h1>聊天吧</h1>
       </div>
