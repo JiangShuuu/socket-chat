@@ -5,13 +5,8 @@ import { useWebRtcContext } from '../context/WebRtcContext'
 
 export default function ChatMsg() {
   const { isMenuOpen, messages, start, end, socket, room } = useSocketContext()
-  const {
-    callUser,
-    checkVideo,
-    setCheckVideo,
-    openVideoInfo,
-    setOpenVideoInfo,
-  } = useWebRtcContext()
+  const { checkVideo, setCheckVideo, openVideoInfo, setOpenVideoInfo } =
+    useWebRtcContext()
   // const msgLength = messages.filter((e) => e.fromSelf === false).length
 
   const sumbitVideoComfirm = () => {
@@ -45,7 +40,6 @@ export default function ChatMsg() {
                     <p>再傳送{3 - messages.length}次訊息即可開啟視訊功能！</p>
                   ) : (
                     <button onClick={sumbitVideoComfirm}>開始視訊</button>
-                    // <button onClick={() => callUser()}>開始視訊</button>
                   )}
                 </>
               )}
