@@ -76,8 +76,8 @@ function Index() {
 
   return (
     <Container menu={isMenuOpen}>
-      {/* {openVideoInfo === 'open' && <VideoPlayer />} */}
-      <VideoPlayer />
+      {openVideoInfo === 'open' && <VideoPlayer />}
+      {/* <VideoPlayer /> */}
       <div className="container">
         <h1>聊天吧</h1>
       </div>

@@ -28,16 +28,6 @@ export const WebRtcProvider = ({ children }) => {
 
   useEffect(() => {
     if (isMenuOpen) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((currentStream) => {
-          setStream(currentStream)
-
-          myVideo.current.srcObject = currentStream
-        })
-      socket.on('callUser', ({ fromId, signal }) => {
-        setCall({ isReceivingCall: true, fromId, signal })
-      })
       // 視訊確認
       socket.on('videoConfirmCheck', (msg) => {
         console.log('getVideoConfirm', msg)
@@ -66,6 +56,22 @@ export const WebRtcProvider = ({ children }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen, socket])
+
+  useEffect(() => {
+    if (openVideoInfo === 'open') {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((currentStream) => {
+          setStream(currentStream)
+
+          myVideo.current.srcObject = currentStream
+        })
+      socket.on('callUser', ({ fromId, signal }) => {
+        setCall({ isReceivingCall: true, fromId, signal })
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openVideoInfo])
 
   // 接聽電話function
   const answerCall = () => {
