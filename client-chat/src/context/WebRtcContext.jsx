@@ -43,6 +43,9 @@ export const WebRtcProvider = ({ children }) => {
         })
     } else {
       myVideo.current.srcObject = null
+      // connectionRef.current.destroy()
+
+      // window.location.reload()
       console.log('關關關')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
