@@ -39,7 +39,7 @@ export default function ChatMsg() {
               {start ? <p>開始聊天！！</p> : <p>找尋中...</p>}
 
               {/* 判斷三次沒 */}
-              {openVideoInfo !== 'open' && (
+              {start && openVideoInfo !== 'open' && (
                 <>
                   {messages.length < 3 ? (
                     <p>再傳送{3 - messages.length}次訊息即可開啟視訊功能！</p>
@@ -52,7 +52,7 @@ export default function ChatMsg() {
 
               {/* 拒絕消息 */}
               {openVideoInfo === 'reject' && (
-                <p>對方拒絕這次邀約, 請稍後再試一次！</p>
+                <h3>對方拒絕這次邀約, 請稍後再試一次！</h3>
               )}
 
               {checkVideo && (

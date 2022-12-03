@@ -10,6 +10,7 @@ export default function VideoPlayer() {
     callEnded,
     answerCall,
     leaveCall,
+    callUser,
     call,
   } = useWebRtcContext()
 
@@ -26,12 +27,22 @@ export default function VideoPlayer() {
   return (
     <VideoBox>
       <div className="videos">
-        <video playsInline muted ref={myVideo} autoPlay></video>
+        <video
+          playsInline
+          muted
+          ref={myVideo}
+          autoPlay
+          className="videoMe"
+        ></video>
         {callAccepted && !callEnded && (
-          <video playsInline ref={userVideo} autoPlay />
+          <video playsInline ref={userVideo} autoPlay className="videoOther" />
         )}
       </div>
       <div className="info">
+        {!callAccepted && (
+          <button onClick={() => callUser()}>準備好按下撥打給對方</button>
+        )}
+
         {call.isReceivingCall && !callAccepted && (
           <div className="calling">
             <h2>對方打來中....</h2>
@@ -50,12 +61,24 @@ const VideoBox = styled.div`
   position: absolute;
   top: 2rem;
   z-index: 9999;
+  text-align: center;
+
   .videos {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
   }
-  video {
-    border: 1px solid;
-    width: 500px;
+  .videoMe {
+    border-radius: 10px;
+    width: 20%;
+  }
+  .videoOther {
+    border-radius: 10px;
+    width: 34%;
+  }
+  .info {
+    padding-top: 1rem;
   }
   .calling {
     display: flex;
@@ -75,5 +98,22 @@ const VideoBox = styled.div`
     color: white;
     background-color: #00aeffbc;
     border-color: #00aeffbc;
+  }
+  @media only screen and (max-width: 600px) {
+    .videos {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .videoMe {
+      all: unset;
+      border-radius: 10px;
+      width: 25%;
+    }
+    .videoOther {
+      all: unset;
+      border-radius: 10px;
+      width: 350px;
+      height: 250px;
+    }
   }
 `
