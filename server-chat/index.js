@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
       if (!findRoom) {
         socket.join(roomId)
         onlineRooms.set(roomId, new Set([socket.id]))
-        cb({id:socket.id, roomid: roomId, status: 'connecting'})
+        cb({id: socket.id, status: 'connecting'})
         return
       }
       socket.join(findRoom)
@@ -78,11 +78,11 @@ io.on("connection", (socket) => {
 
       // 拿到加入房間的房長id
       const roomOwnerId = onlineRooms.get(findRoom).values().next().value
-      cb({id: roomOwnerId, roomid: findRoom, status: 'success'})
+      cb({id: findRoom, roomid: roomOwnerId, status: 'success'})
     } else {
       socket.join(roomId)
       onlineRooms.set(roomId, new Set([socket.id]))
-      cb({id:socket.id, roomid: roomId, status: 'connecting'})
+      cb({id: roomId, status: 'connecting'})
     }
   })
 
