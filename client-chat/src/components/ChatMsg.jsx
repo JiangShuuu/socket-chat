@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
+import { useWebRtcContext } from '../context/WebRtcContext'
 
 export default function ChatMsg() {
   const { isMenuOpen, messages, start, end } = useSocketContext()
-
+  const { callUser } = useWebRtcContext()
   return (
     <Container menu={isMenuOpen}>
       <div className="content">
@@ -14,7 +15,8 @@ export default function ChatMsg() {
           ) : (
             <>
               {start ? <p>開始聊天！！</p> : <p>找尋中...</p>}
-
+              {/* 判斷三次沒 */}
+              <button onClick={() => callUser()}>Call</button>
               {messages.map((item, idx) => {
                 return (
                   <div

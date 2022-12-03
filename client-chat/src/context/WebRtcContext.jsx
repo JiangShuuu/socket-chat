@@ -12,36 +12,19 @@ import { useSocketContext } from './SocketContext'
 export const WebRtcContext = createContext()
 
 export const WebRtcProvider = ({ children }) => {
-  const {
-    socket,
-    isMenuOpen,
-    me,
-    talker,
-    toggleMenu,
-    setMessages,
-    room,
-    start,
-  } = useSocketContext()
+  const { socket, isMenuOpen, me, talker } = useSocketContext()
 
-  // 接聽電話
   const [callAccepted, setCallAccepted] = useState(false)
-  // 結束電話
   const [callEnded, setCallEnded] = useState(false)
-  // 放在video顯示的地方,還不確定作用
   const [stream, setStream] = useState()
-  // 來電話
   const [call, setCall] = useState({})
 
-  // 我的視窗
   const myVideo = useRef()
-  // 對方的視窗
   const userVideo = useRef()
-  // 給 Peer用的
   const connectionRef = useRef()
 
   useEffect(() => {
     if (isMenuOpen) {
-      console.log('開了拉')
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((currentStream) => {
@@ -49,21 +32,16 @@ export const WebRtcProvider = ({ children }) => {
 
           myVideo.current.srcObject = currentStream
         })
-
-      // wip
       socket.on('callUser', ({ fromId, signal }) => {
-        console.log('我打得拉！', fromId, signal)
         setCall({ isReceivingCall: true, fromId, signal })
       })
     } else {
       myVideo.current.srcObject = null
-      // 關閉視訊
       if (stream) {
         stream.getTracks().forEach(function (track) {
           track.stop()
         })
       }
-      console.log('關關關')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
