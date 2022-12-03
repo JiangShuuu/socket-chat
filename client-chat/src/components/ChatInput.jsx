@@ -6,8 +6,16 @@ import { useState } from 'react'
 import LeaveModal from '../components/LeaveModal'
 
 export default function ChatInput({ userId }) {
-  const { socket, isMenuOpen, toggleMenu, setMessages, room, start } =
-    useSocketContext()
+  const {
+    socket,
+    isMenuOpen,
+    toggleMenu,
+    setMessages,
+    room,
+    start,
+    setMe,
+    setTalker,
+  } = useSocketContext()
   const [msg, setMsg] = useState('')
   const [model, setModel] = useState(false)
 
@@ -17,6 +25,8 @@ export default function ChatInput({ userId }) {
     console.log(data)
     toggleMenu(false)
     setModel(false)
+    setMe('')
+    setTalker('')
   }
 
   const sendChat = (event) => {

@@ -9,8 +9,15 @@ import VideoPlayer from '../components/VideoPlayer'
 
 function Index() {
   const [userId, setUserId] = useState()
-  const { socket, isMenuOpen, toggleMenu, setRoom, setStart, setEnd } =
-    useSocketContext()
+  const {
+    socket,
+    isMenuOpen,
+    toggleMenu,
+    setRoom,
+    setStart,
+    setEnd,
+    setTalker,
+  } = useSocketContext()
 
   const connectSocket = async () => {
     // 開啟並連線
@@ -52,6 +59,9 @@ function Index() {
 
   const addRoom = () => {
     socket.emit('join-room', `${socket.id}_room`, (msg) => {
+      if (msg.roomid) {
+        setTalker(msg.roomid)
+      }
       console.log('room', msg)
       if (msg.status === 'success') {
         setTimeout(() => {
