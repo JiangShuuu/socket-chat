@@ -13,6 +13,7 @@
     "react-icons": "^4.6.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.5.3",
     "styled-components": "^5.3.6",
     "uuid": "^9.0.0",

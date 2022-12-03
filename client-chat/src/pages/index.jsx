@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
 import { WebRtcProvider } from '../context/WebRtcContext'
 import userAPI from '../apis/user'
+import VideoPlayer from '../components/VideoPlayer'
 
 function Index() {
   const [userId, setUserId] = useState()
@@ -63,6 +64,7 @@ function Index() {
 
   return (
     <Container menu={isMenuOpen}>
+      <VideoPlayer />
       <div className="container">
         <h1>聊天吧</h1>
       </div>
