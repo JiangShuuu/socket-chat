@@ -86,6 +86,14 @@ io.on("connection", (socket) => {
     }
   })
 
+  socket.on('videoConfirm', room => {
+    socket.to(room).emit('videoConfirmCheck', 'checkVideoConfirm')
+  })
+
+  socket.on('videoCheckInfo', data => {
+    socket.to(data.room).emit('videoCheckResult', data.result)
+  })
+
   socket.on("callUser", ({ userToCall, signalData, from }) => {
 		io.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
 	});

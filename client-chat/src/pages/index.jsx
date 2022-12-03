@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
-import { WebRtcProvider } from '../context/WebRtcContext'
+import { WebRtcProvider, useWebRtcContext } from '../context/WebRtcContext'
 import userAPI from '../apis/user'
 import VideoPlayer from '../components/VideoPlayer'
 
@@ -18,6 +18,8 @@ function Index() {
     setEnd,
     setTalker,
   } = useSocketContext()
+
+  const { openVideoInfo } = useWebRtcContext()
 
   const connectSocket = async () => {
     // 開啟並連線
@@ -74,8 +76,8 @@ function Index() {
 
   return (
     <Container menu={isMenuOpen}>
+      {/* {openVideoInfo === 'open' && <VideoPlayer />} */}
       <VideoPlayer />
-
       <div className="container">
         <h1>聊天吧</h1>
       </div>

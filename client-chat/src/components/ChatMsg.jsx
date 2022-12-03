@@ -4,9 +4,23 @@ import { useSocketContext } from '../context/SocketContext'
 import { useWebRtcContext } from '../context/WebRtcContext'
 
 export default function ChatMsg() {
-  const { isMenuOpen, messages, start, end } = useSocketContext()
-  const { callUser } = useWebRtcContext()
+  const { isMenuOpen, messages, start, end, socket, room } = useSocketContext()
+  const { callUser, checkVideo, setCheckVideo, openVideoInfo } =
+    useWebRtcContext()
   // const msgLength = messages.filter((e) => e.fromSelf === false).length
+
+  const sumbitVideoComfirm = () => {
+    socket.emit('videoConfirm', room)
+  }
+
+  const checkVideoAgree = () => {
+    socket.emit('videoCheckInfo', { room, result: true })
+    setCheckVideo(false)
+  }
+  const checkVideoDisagree = () => {
+    socket.emit('videoCheckInfo', { room, result: false })
+    setCheckVideo(false)
+  }
 
   return (
     <Container menu={isMenuOpen}>
@@ -22,7 +36,21 @@ export default function ChatMsg() {
               {messages.length < 3 ? (
                 <p>再傳送{3 - messages.length}次訊息即可開啟視訊功能！</p>
               ) : (
-                <button onClick={() => callUser()}>開始視訊</button>
+                <button onClick={sumbitVideoComfirm}>開始視訊</button>
+                // <button onClick={() => callUser()}>開始視訊</button>
+              )}
+
+              {/* 拒絕消息 */}
+              {openVideoInfo === 'reject' && (
+                <p>對方拒絕這次邀約, 請稍後再試一次！</p>
+              )}
+
+              {checkVideo && (
+                <div>
+                  <h3>對方想與你視訊, 同意或拒絕？</h3>
+                  <p onClick={checkVideoAgree}>是</p>
+                  <p onClick={checkVideoDisagree}>否</p>
+                </div>
               )}
 
               {messages.map((item, idx) => {

@@ -18,6 +18,9 @@ export const WebRtcProvider = ({ children }) => {
   const [callEnded, setCallEnded] = useState(false)
   const [stream, setStream] = useState()
   const [call, setCall] = useState({})
+  //
+  const [checkVideo, setCheckVideo] = useState()
+  const [openVideoInfo, setOpenVideoInfo] = useState('')
 
   const myVideo = useRef()
   const userVideo = useRef()
@@ -35,8 +38,25 @@ export const WebRtcProvider = ({ children }) => {
       socket.on('callUser', ({ fromId, signal }) => {
         setCall({ isReceivingCall: true, fromId, signal })
       })
+      // 視訊確認
+      socket.on('videoConfirmCheck', (msg) => {
+        console.log('getVideoConfirm', msg)
+        // 開啟意願視窗
+        setCheckVideo(true)
+      })
+      // 視訊同意與否
+      socket.on('videoCheckResult', (msg) => {
+        console.log('getVideoCheckResult', msg)
+        if (msg) {
+          console.log('對方同意視訊')
+          setOpenVideoInfo('open')
+        } else {
+          console.log('對方拒絕視訊')
+          setOpenVideoInfo('reject')
+        }
+      })
     } else {
-      myVideo.current.srcObject = null
+      // myVideo.current.srcObject = null
       if (stream) {
         stream.getTracks().forEach(function (track) {
           track.stop()
@@ -90,7 +110,6 @@ export const WebRtcProvider = ({ children }) => {
   }
 
   //  掛掉二次打 待解
-
   const leaveCall = () => {
     setCallEnded(true)
     connectionRef.current.destroy()
@@ -108,6 +127,10 @@ export const WebRtcProvider = ({ children }) => {
         callUser,
         leaveCall,
         answerCall,
+        checkVideo,
+        setCheckVideo,
+        openVideoInfo,
+        setOpenVideoInfo,
       }}
     >
       {children}
