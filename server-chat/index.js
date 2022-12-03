@@ -86,6 +86,14 @@ io.on("connection", (socket) => {
     }
   })
 
+  socket.on("callUser", ({ userToCall, signalData, from }) => {
+		io.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
+	});
+
+	socket.on("answerCall", (data) => {
+		io.to(data.to).emit("callAccepted", data.signal)
+	});
+
   socket.on("disconnect", (reason) => {
     // 刪除 onlineUser 
     onlineUsers.forEach((value, key) => {

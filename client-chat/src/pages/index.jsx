@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
-import { WebRtcProvider } from '../context/WebRtcContext'
+import { WebRtcProvider, useWebRtcContext } from '../context/WebRtcContext'
 import userAPI from '../apis/user'
 import VideoPlayer from '../components/VideoPlayer'
 
@@ -18,7 +18,18 @@ function Index() {
     setEnd,
     setTalker,
   } = useSocketContext()
-
+  const {
+    call,
+    callAccepted,
+    myVideo,
+    userVideo,
+    stream,
+    callEnded,
+    callUser,
+    leaveCall,
+    talker,
+    answerCall,
+  } = useWebRtcContext()
   const connectSocket = async () => {
     // 開啟並連線
     toggleMenu(true)
@@ -74,7 +85,19 @@ function Index() {
 
   return (
     <Container menu={isMenuOpen}>
-      <VideoPlayer />
+      <div className="vv">
+        <VideoPlayer />
+        {callAccepted && !callEnded && (
+          <video playsInline ref={userVideo} autoPlay />
+        )}
+      </div>
+      {call.isReceivingCall && !callAccepted && (
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <h1>is calling....</h1>
+          <button onClick={answerCall}>Answer</button>
+        </div>
+      )}
+      <button onClick={() => callUser()}>Call</button>
       <div className="container">
         <h1>聊天吧</h1>
       </div>
@@ -105,6 +128,12 @@ const Container = styled.div`
   justify-content: center;
   gap: 4rem;
   background-image: linear-gradient(to bottom right, #9bc8ff, #f9d185);
+  button {
+    z-index: 9999;
+  }
+  .vv {
+    display: flex;
+  }
   .container {
     h1 {
       color: #07688b;

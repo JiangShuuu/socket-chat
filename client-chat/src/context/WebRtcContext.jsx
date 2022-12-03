@@ -12,8 +12,16 @@ import { useSocketContext } from './SocketContext'
 export const WebRtcContext = createContext()
 
 export const WebRtcProvider = ({ children }) => {
-  const { socket, isMenuOpen, toggleMenu, setMessages, room, start } =
-    useSocketContext()
+  const {
+    socket,
+    isMenuOpen,
+    me,
+    talker,
+    toggleMenu,
+    setMessages,
+    room,
+    start,
+  } = useSocketContext()
 
   // 接聽電話
   const [callAccepted, setCallAccepted] = useState(false)
@@ -21,7 +29,7 @@ export const WebRtcProvider = ({ children }) => {
   const [callEnded, setCallEnded] = useState(false)
   // 放在video顯示的地方,還不確定作用
   const [stream, setStream] = useState()
-  // 撥打電話
+  // 來電話
   const [call, setCall] = useState({})
 
   // 我的視窗
@@ -41,6 +49,12 @@ export const WebRtcProvider = ({ children }) => {
 
           myVideo.current.srcObject = currentStream
         })
+
+      // wip
+      socket.on('callUser', ({ fromId, signal }) => {
+        console.log('我打得拉！', fromId, signal)
+        setCall({ isReceivingCall: true, fromId, signal })
+      })
     } else {
       myVideo.current.srcObject = null
       // connectionRef.current.destroy()
@@ -48,6 +62,7 @@ export const WebRtcProvider = ({ children }) => {
       // window.location.reload()
       console.log('關關關')
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen, socket])
 
@@ -58,10 +73,12 @@ export const WebRtcProvider = ({ children }) => {
     const peer = new Peer({ initiator: false, trickle: false, stream })
 
     peer.on('signal', (data) => {
-      socket.emit('answerCall', { signal: data, to: call.from })
+      socket.emit('answerCall', { signal: data, to: call.fromId })
     })
 
     peer.on('stream', (currentStream) => {
+      // wip
+      console.log('接聽者者signal', currentStream)
       userVideo.current.srcObject = currentStream
     })
 
@@ -70,13 +87,14 @@ export const WebRtcProvider = ({ children }) => {
     connectionRef.current = peer
   }
 
-  const callUser = (id) => {
+  const callUser = () => {
     const peer = new Peer({ initiator: true, trickle: false, stream })
 
     peer.on('signal', (data) => {
       socket.emit('callUser', {
-        userToCall: id,
+        userToCall: talker,
         signalData: data,
+        from: me,
         // from: me,
         // name,
       })
@@ -87,8 +105,9 @@ export const WebRtcProvider = ({ children }) => {
     })
 
     socket.on('callAccepted', (signal) => {
+      console.log('撥打者signal', signal)
       setCallAccepted(true)
-
+      // wip
       peer.signal(signal)
     })
 
@@ -111,9 +130,6 @@ export const WebRtcProvider = ({ children }) => {
         myVideo,
         userVideo,
         stream,
-        // name,
-        // setName,
-        // me,
         callEnded,
         callUser,
         leaveCall,
