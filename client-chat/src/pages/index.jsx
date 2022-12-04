@@ -48,8 +48,9 @@ function Index() {
 
     const handleTabClose = (event) => {
       event.preventDefault()
-
-      return (event.returnValue = 'Are you sure you want to exit?')
+      userAPI.deleteUser(userId)
+      return
+      // return (event.returnValue = 'Are you sure you want to exit?')
     }
 
     window.addEventListener('beforeunload', handleTabClose)
@@ -57,6 +58,7 @@ function Index() {
     return () => {
       window.removeEventListener('beforeunload', handleTabClose)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen])
 
   const addRoom = () => {

@@ -49,7 +49,6 @@ export const WebRtcProvider = ({ children }) => {
         }
       })
     } else {
-      // myVideo.current.srcObject = null
       if (stream) {
         stream.getTracks().forEach(function (track) {
           track.stop()

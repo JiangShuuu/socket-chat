@@ -13,6 +13,7 @@ export default function ChatInput({ userId }) {
     setMessages,
     room,
     start,
+    end,
     setMe,
     setTalker,
   } = useSocketContext()
@@ -23,10 +24,12 @@ export default function ChatInput({ userId }) {
     // 加判斷式做另外的function
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
-    toggleMenu(false)
-    setModel(false)
-    setMe('')
-    setTalker('')
+
+    window.location.reload()
+    // toggleMenu(false)
+    // setModel(false)
+    // setMe('')
+    // setTalker('')
   }
 
   const sendChat = (event) => {
@@ -51,7 +54,13 @@ export default function ChatInput({ userId }) {
             className="input-container"
             onSubmit={(event) => sendChat(event)}
           >
-            <div className="inputBtn" onClick={() => setModel(true)}>
+            {}
+            <div
+              className="inputBtn"
+              onClick={
+                end ? () => window.location.reload() : () => setModel(true)
+              }
+            >
               離開
             </div>
             <input

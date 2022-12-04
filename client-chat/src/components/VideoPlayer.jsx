@@ -15,16 +15,6 @@ export default function VideoPlayer() {
     connecting,
   } = useWebRtcContext()
 
-  // const {
-  //   call,
-  //   callAccepted,
-  //   userVideo,
-  //   callEnded,
-  //   callUser,
-  //   leaveCall,
-  //   answerCall,
-  // } = useWebRtcContext()
-
   return (
     <VideoBox>
       <div className="videos">
@@ -53,7 +43,7 @@ export default function VideoPlayer() {
             <button onClick={answerCall}>接聽</button>
           </div>
         )}
-        {callAccepted && <button onClick={() => leaveCall()}>結束視訊</button>}
+        {/* {callAccepted && <button onClick={() => leaveCall()}>結束視訊</button>} */}
       </div>
     </VideoBox>
   )
