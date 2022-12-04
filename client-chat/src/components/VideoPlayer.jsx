@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useWebRtcContext } from '../context/WebRtcContext'
 import styled from 'styled-components'
 
@@ -12,8 +12,17 @@ export default function VideoPlayer() {
     callUser,
     call,
     connecting,
+    openVideoInfo,
   } = useWebRtcContext()
+  const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    if (openVideoInfo === 'open' && myVideo) {
+      setTimeout(() => {
+        setLoading(false)
+      }, 4000)
+    }
+  }, [openVideoInfo, myVideo])
   return (
     <VideoBox>
       <div className="videos">
@@ -29,11 +38,21 @@ export default function VideoPlayer() {
         )}
       </div>
       <div className="info">
-        {!callAccepted && (
-          <button onClick={() => callUser()} disabled={call.isReceivingCall}>
-            準備好按下撥打給對方
-          </button>
+        {loading ? (
+          <p>讀取中...</p>
+        ) : (
+          <>
+            {!callAccepted && (
+              <button
+                onClick={() => callUser()}
+                disabled={call.isReceivingCall | loading}
+              >
+                準備好按下撥打給對方
+              </button>
+            )}
+          </>
         )}
+
         {connecting && <h3>等待對方接聽中...</h3>}
 
         {call.isReceivingCall && !callAccepted && (
