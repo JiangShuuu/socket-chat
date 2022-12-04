@@ -32,19 +32,15 @@ export const WebRtcProvider = ({ children }) => {
     if (isMenuOpen) {
       // 視訊確認
       socket.on('videoConfirmCheck', (msg) => {
-        console.log('getVideoConfirm', msg)
         // 開啟意願視窗
         setCheckVideo(true)
         setOpenVideoInfo('')
       })
       // 視訊同意與否
       socket.on('videoCheckResult', (msg) => {
-        console.log('getVideoCheckResult', msg)
         if (msg) {
-          console.log('對方同意視訊')
           setOpenVideoInfo('open')
         } else {
-          console.log('對方拒絕視訊')
           setOpenVideoInfo('reject')
         }
       })
@@ -55,7 +51,6 @@ export const WebRtcProvider = ({ children }) => {
         })
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMenuOpen, socket])
 
@@ -119,12 +114,6 @@ export const WebRtcProvider = ({ children }) => {
     connectionRef.current = peer
   }
 
-  //  掛掉二次打 待解
-  const leaveCall = () => {
-    setCallEnded(true)
-    connectionRef.current.destroy()
-  }
-
   return (
     <WebRtcContext.Provider
       value={{
@@ -135,7 +124,7 @@ export const WebRtcProvider = ({ children }) => {
         stream,
         callEnded,
         callUser,
-        leaveCall,
+        setCallEnded,
         answerCall,
         checkVideo,
         setCheckVideo,

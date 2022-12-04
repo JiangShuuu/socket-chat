@@ -6,17 +6,8 @@ import { useState } from 'react'
 import LeaveModal from '../components/LeaveModal'
 
 export default function ChatInput({ userId }) {
-  const {
-    socket,
-    isMenuOpen,
-    toggleMenu,
-    setMessages,
-    room,
-    start,
-    end,
-    setMe,
-    setTalker,
-  } = useSocketContext()
+  const { socket, isMenuOpen, setMessages, room, start, end } =
+    useSocketContext()
   const [msg, setMsg] = useState('')
   const [model, setModel] = useState(false)
 
@@ -24,7 +15,6 @@ export default function ChatInput({ userId }) {
     // 加判斷式做另外的function
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
-
     window.location.reload()
     // toggleMenu(false)
     // setModel(false)

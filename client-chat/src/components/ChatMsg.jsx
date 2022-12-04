@@ -96,7 +96,6 @@ const Container = styled.div`
       all: unset;
       border: 1px solid;
       margin: 0.25rem;
-
       font-size: 14px;
       padding: 0.25rem;
       border-radius: 5px;

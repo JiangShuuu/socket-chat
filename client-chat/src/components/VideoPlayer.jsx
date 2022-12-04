@@ -9,7 +9,6 @@ export default function VideoPlayer() {
     userVideo,
     callEnded,
     answerCall,
-    leaveCall,
     callUser,
     call,
     connecting,
@@ -43,7 +42,6 @@ export default function VideoPlayer() {
             <button onClick={answerCall}>接聽</button>
           </div>
         )}
-        {/* {callAccepted && <button onClick={() => leaveCall()}>結束視訊</button>} */}
       </div>
     </VideoBox>
   )

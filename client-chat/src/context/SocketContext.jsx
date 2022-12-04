@@ -35,20 +35,15 @@ export const SocketProvider = ({ children }) => {
     // 連接
     socket.on('connect', () => {
       setMe(socket.id)
-      console.log(socket.id)
     })
     // 離開
-    socket.on('disconnect', () => {
-      console.log(socket.disconnected)
-    })
+    socket.on('disconnect', () => {})
     // 接收訊息
     socket.on('receive-msg', (arrivalMsg) => {
-      console.log('get', arrivalMsg)
       setMessages((prev) => [...prev, { fromSelf: false, msg: arrivalMsg }])
     })
     // 可以聊天與否
     socket.on('start-connect', (msg) => {
-      console.log('connectMsg', msg)
       setTimeout(() => {
         setTalker(msg.id)
         setStart(true)
@@ -56,7 +51,6 @@ export const SocketProvider = ({ children }) => {
     })
     // 離開聊天
     socket.on('connect-end', (msg) => {
-      console.log('end', msg)
       setEnd(true)
       setStart(false)
       setMe('')

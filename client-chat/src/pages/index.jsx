@@ -66,7 +66,6 @@ function Index() {
       if (msg.roomid) {
         setTalker(msg.roomid)
       }
-      console.log('room', msg)
       if (msg.status === 'success') {
         setTimeout(() => {
           setStart(true)
