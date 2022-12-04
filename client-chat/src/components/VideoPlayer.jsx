@@ -51,9 +51,7 @@ export default function VideoPlayer() {
             <button onClick={answerCall}>接聽</button>
           </div>
         )}
-        {callAccepted && !call.isReceivingCall && (
-          <button onClick={() => leaveCall()}>結束視訊</button>
-        )}
+        {callAccepted && <button onClick={() => leaveCall()}>結束視訊</button>}
       </div>
     </VideoBox>
   )
