@@ -41,7 +41,9 @@ export default function VideoPlayer() {
       </div>
       <div className="info">
         {!callAccepted && (
-          <button onClick={() => callUser()}>準備好按下撥打給對方</button>
+          <button onClick={() => callUser()} disabled={call.isReceivingCall}>
+            準備好按下撥打給對方
+          </button>
         )}
         {connecting && <h3>等待對方接聽中...</h3>}
 
@@ -62,7 +64,16 @@ const VideoBox = styled.div`
   top: 2rem;
   z-index: 9999;
   text-align: center;
-
+  button:disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
+  button:hover:disabled {
+    color: gray;
+    background-color: unset;
+    border-color: unset;
+    cursor: not-allowed;
+  }
   .videos {
     display: flex;
     align-items: center;
