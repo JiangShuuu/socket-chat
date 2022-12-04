@@ -9,6 +9,8 @@ export const SocketProvider = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [room, setRoom] = useState('')
   const [end, setEnd] = useState(false)
+  const [me, setMe] = useState('')
+  const [talker, setTalker] = useState('')
 
   const host = 'https://express1.jiangshuuu.com/'
   const socket = useSocket(host, {
@@ -32,6 +34,7 @@ export const SocketProvider = ({ children }) => {
   const SocketListener = () => {
     // 連接
     socket.on('connect', () => {
+      setMe(socket.id)
       console.log(socket.id)
     })
     // 離開
@@ -47,6 +50,7 @@ export const SocketProvider = ({ children }) => {
     socket.on('start-connect', (msg) => {
       console.log('connectMsg', msg)
       setTimeout(() => {
+        setTalker(msg.id)
         setStart(true)
       }, 1000)
     })
@@ -55,6 +59,8 @@ export const SocketProvider = ({ children }) => {
       console.log('end', msg)
       setEnd(true)
       setStart(false)
+      setMe('')
+      setTalker('')
     })
   }
   // 開關
@@ -76,6 +82,10 @@ export const SocketProvider = ({ children }) => {
         setStart,
         end,
         setEnd,
+        me,
+        setMe,
+        talker,
+        setTalker,
       }}
     >
       {children}

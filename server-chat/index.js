@@ -69,19 +69,39 @@ io.on("connection", (socket) => {
       if (!findRoom) {
         socket.join(roomId)
         onlineRooms.set(roomId, new Set([socket.id]))
-        cb({id: roomId, status: 'connecting'})
+        cb({id: socket.id, status: 'connecting'})
         return
       }
       socket.join(findRoom)
-      socket.to(findRoom).emit('start-connect', 'startChat')
+      // 送出連線者的id
+      socket.to(findRoom).emit('start-connect', { msg:'startChat', id: socket.id } )
       onlineRooms.get(findRoom).add(socket.id)
-      cb({id: findRoom, status: 'success'})
+
+      // 拿到加入房間的房長id
+      const roomOwnerId = onlineRooms.get(findRoom).values().next().value
+      cb({id: findRoom, roomid: roomOwnerId, status: 'success'})
     } else {
       socket.join(roomId)
       onlineRooms.set(roomId, new Set([socket.id]))
       cb({id: roomId, status: 'connecting'})
     }
   })
+
+  socket.on('videoConfirm', room => {
+    socket.to(room).emit('videoConfirmCheck', 'checkVideoConfirm')
+  })
+
+  socket.on('videoCheckInfo', data => {
+    socket.to(data.room).emit('videoCheckResult', data.result)
+  })
+
+  socket.on("callUser", ({ userToCall, signalData, from }) => {
+		io.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
+	});
+
+	socket.on("answerCall", (data) => {
+		io.to(data.to).emit("callAccepted", data.signal)
+	});
 
   socket.on("disconnect", (reason) => {
     // 刪除 onlineUser 

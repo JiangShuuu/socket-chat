@@ -3,12 +3,23 @@ import styled from 'styled-components'
 import Chat from '../components/Chat'
 import { v4 as uuidv4 } from 'uuid'
 import { SocketProvider, useSocketContext } from '../context/SocketContext'
+import { WebRtcProvider, useWebRtcContext } from '../context/WebRtcContext'
 import userAPI from '../apis/user'
+import VideoPlayer from '../components/VideoPlayer'
 
 function Index() {
   const [userId, setUserId] = useState()
-  const { socket, isMenuOpen, toggleMenu, setRoom, setStart, setEnd } =
-    useSocketContext()
+  const {
+    socket,
+    isMenuOpen,
+    toggleMenu,
+    setRoom,
+    setStart,
+    setEnd,
+    setTalker,
+  } = useSocketContext()
+
+  const { openVideoInfo } = useWebRtcContext()
 
   const connectSocket = async () => {
     // 開啟並連線
@@ -50,6 +61,9 @@ function Index() {
 
   const addRoom = () => {
     socket.emit('join-room', `${socket.id}_room`, (msg) => {
+      if (msg.roomid) {
+        setTalker(msg.roomid)
+      }
       console.log('room', msg)
       if (msg.status === 'success') {
         setTimeout(() => {
@@ -62,6 +76,8 @@ function Index() {
 
   return (
     <Container menu={isMenuOpen}>
+      {openVideoInfo === 'open' && <VideoPlayer />}
+      {/* <VideoPlayer /> */}
       <div className="container">
         <h1>聊天吧</h1>
       </div>
@@ -76,7 +92,9 @@ function Index() {
 export default function ContextIndex() {
   return (
     <SocketProvider>
-      <Index />
+      <WebRtcProvider>
+        <Index />
+      </WebRtcProvider>
     </SocketProvider>
   )
 }
