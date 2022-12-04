@@ -11,6 +11,7 @@ export default function ChatMsg() {
 
   const sumbitVideoComfirm = () => {
     socket.emit('videoConfirm', room)
+    setOpenVideoInfo('connecting')
   }
 
   const checkVideoAgree = () => {
@@ -48,6 +49,8 @@ export default function ChatMsg() {
               {openVideoInfo === 'reject' && (
                 <h3>對方拒絕這次邀約, 請稍後再試一次！</h3>
               )}
+              {/* 連線中 */}
+              {openVideoInfo === 'connecting' && <h3>等待對方確認中...</h3>}
 
               {checkVideo && (
                 <div>

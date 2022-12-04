@@ -33,6 +33,7 @@ export const WebRtcProvider = ({ children }) => {
         console.log('getVideoConfirm', msg)
         // 開啟意願視窗
         setCheckVideo(true)
+        setOpenVideoInfo('')
       })
       // 視訊同意與否
       socket.on('videoCheckResult', (msg) => {
