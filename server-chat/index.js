@@ -22,7 +22,7 @@ mongoose.connect(MONGODB, {
 })
 
 const server = app.listen(PORT, () => {
-  console.log(`Server started on Port 8877`)
+  console.log(`Server started on Port ${PORT}`)
 })
 
 const io = socket(server, {
