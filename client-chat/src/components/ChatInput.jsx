@@ -54,7 +54,6 @@ export default function ChatInput({ userId }) {
             className="input-container"
             onSubmit={(event) => sendChat(event)}
           >
-            {}
             <div
               className="inputBtn"
               onClick={
