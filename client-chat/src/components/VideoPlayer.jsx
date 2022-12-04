@@ -12,6 +12,7 @@ export default function VideoPlayer() {
     leaveCall,
     callUser,
     call,
+    connecting,
   } = useWebRtcContext()
 
   // const {
@@ -42,6 +43,7 @@ export default function VideoPlayer() {
         {!callAccepted && (
           <button onClick={() => callUser()}>準備好按下撥打給對方</button>
         )}
+        {connecting && <h3>等待對方接聽中...</h3>}
 
         {call.isReceivingCall && !callAccepted && (
           <div className="calling">

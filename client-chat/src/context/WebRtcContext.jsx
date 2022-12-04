@@ -21,6 +21,8 @@ export const WebRtcProvider = ({ children }) => {
   //
   const [checkVideo, setCheckVideo] = useState()
   const [openVideoInfo, setOpenVideoInfo] = useState('')
+  //
+  const [connecting, setConnecting] = useState(false)
 
   const myVideo = useRef()
   const userVideo = useRef()
@@ -94,6 +96,7 @@ export const WebRtcProvider = ({ children }) => {
   }
 
   const callUser = () => {
+    setConnecting(true)
     const peer = new Peer({ initiator: true, trickle: false, stream })
 
     peer.on('signal', (data) => {
@@ -110,6 +113,7 @@ export const WebRtcProvider = ({ children }) => {
 
     socket.on('callAccepted', (signal) => {
       setCallAccepted(true)
+      setConnecting(false)
       peer.signal(signal)
     })
 
@@ -138,6 +142,8 @@ export const WebRtcProvider = ({ children }) => {
         setCheckVideo,
         openVideoInfo,
         setOpenVideoInfo,
+        connecting,
+        setConnecting,
       }}
     >
       {children}
