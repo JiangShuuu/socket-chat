@@ -16,10 +16,6 @@ export default function ChatInput({ userId }) {
     const { data } = await userAPI.deleteUser(userId)
     console.log(data)
     window.location.reload()
-    // toggleMenu(false)
-    // setModel(false)
-    // setMe('')
-    // setTalker('')
   }
 
   const sendChat = (event) => {
@@ -46,9 +42,7 @@ export default function ChatInput({ userId }) {
           >
             <div
               className="inputBtn"
-              onClick={
-                end ? () => window.location.reload() : () => setModel(true)
-              }
+              onClick={end ? () => leaveBtn() : () => setModel(true)}
             >
               離開
             </div>
