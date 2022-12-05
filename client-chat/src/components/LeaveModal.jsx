@@ -22,6 +22,7 @@ const Modal = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 9999;
   border: 1px solid;
   display: flex;
   align-items: center;
