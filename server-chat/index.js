@@ -91,7 +91,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("callUser", ({ userToCall, signalData, from }) => {
-		socket.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
+		io.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
 	});
 
   socket.on("calling", (talker) => {
@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
   })
 
 	socket.on("answerCall", (data) => {
-		socket.to(data.to).emit("callAccepted", data.signal)
+		io.to(data.to).emit("callAccepted", data.signal)
 	});
 
   socket.on("disconnect", (reason) => {
