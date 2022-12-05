@@ -56,7 +56,9 @@ export default function VideoPlayer() {
 
         {connecting && <h3>等待對方接聽中...</h3>}
 
-        {calling && !callAccepted && (
+        {calling && !call.isReceivingCall && <p>訊號接收中...</p>}
+
+        {call.isReceivingCall && !callAccepted && (
           <div className="calling">
             <h2>對方打來中....</h2>
             <button onClick={answerCall}>接聽</button>
