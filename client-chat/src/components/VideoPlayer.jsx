@@ -13,6 +13,7 @@ export default function VideoPlayer() {
     call,
     connecting,
     openVideoInfo,
+    calling,
   } = useWebRtcContext()
   const [loading, setLoading] = useState(true)
 
@@ -20,7 +21,7 @@ export default function VideoPlayer() {
     if (openVideoInfo === 'open' && myVideo) {
       setTimeout(() => {
         setLoading(false)
-      }, 4000)
+      }, 5000)
     }
   }, [openVideoInfo, myVideo])
   return (
@@ -45,7 +46,7 @@ export default function VideoPlayer() {
             {!callAccepted && (
               <button
                 onClick={() => callUser()}
-                disabled={call.isReceivingCall | loading}
+                disabled={call.isReceivingCall | connecting | calling}
               >
                 準備好按下撥打給對方
               </button>
@@ -55,7 +56,7 @@ export default function VideoPlayer() {
 
         {connecting && <h3>等待對方接聽中...</h3>}
 
-        {call.isReceivingCall && !callAccepted && (
+        {calling && !callAccepted && (
           <div className="calling">
             <h2>對方打來中....</h2>
             <button onClick={answerCall}>接聽</button>

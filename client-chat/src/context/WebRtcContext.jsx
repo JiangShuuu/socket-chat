@@ -18,11 +18,12 @@ export const WebRtcProvider = ({ children }) => {
   const [callEnded, setCallEnded] = useState(false)
   const [stream, setStream] = useState()
   const [call, setCall] = useState({})
-  //
+  // 確認意願&回覆意願
   const [checkVideo, setCheckVideo] = useState()
   const [openVideoInfo, setOpenVideoInfo] = useState('')
-  //
+  // 撥打中&接聽中
   const [connecting, setConnecting] = useState(false)
+  const [calling, setCalling] = useState(false)
 
   const myVideo = useRef()
   const userVideo = useRef()
@@ -66,13 +67,17 @@ export const WebRtcProvider = ({ children }) => {
       socket.on('callUser', ({ fromId, signal }) => {
         setCall({ isReceivingCall: true, fromId, signal })
       })
+      socket.on('calling', () => {
+        setCalling(true)
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openVideoInfo])
 
-  // 接聽電話function
   const answerCall = () => {
     setCallAccepted(true)
+
+    setCalling(false)
 
     const peer = new Peer({ initiator: false, trickle: false, stream })
 
@@ -91,7 +96,10 @@ export const WebRtcProvider = ({ children }) => {
 
   const callUser = () => {
     setConnecting(true)
+
     const peer = new Peer({ initiator: true, trickle: false, stream })
+
+    socket.emit('calling', talker)
 
     peer.on('signal', (data) => {
       socket.emit('callUser', {
@@ -132,6 +140,8 @@ export const WebRtcProvider = ({ children }) => {
         setOpenVideoInfo,
         connecting,
         setConnecting,
+        calling,
+        setCalling,
       }}
     >
       {children}

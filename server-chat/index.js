@@ -39,9 +39,6 @@ global.onlineUsers = new Map()
 global.onlineRooms = new Map()
 
 io.on("connection", (socket) => {
-  console.log(socket.id)
-  const ids = io.allSockets();
-
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id)
     console.log('onlineUsers', onlineUsers)
@@ -50,10 +47,8 @@ io.on("connection", (socket) => {
   socket.on("send-msg", (msg, room) => {
     if (!room) {
       socket.emit("receive-msg", msg)
-      console.log('other', msg)
     } else {
       socket.to(room).emit("receive-msg", msg)
-      console.log('new', room, msg)
     }
   })
 
@@ -96,11 +91,15 @@ io.on("connection", (socket) => {
   })
 
   socket.on("callUser", ({ userToCall, signalData, from }) => {
-		io.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
+		socket.to(userToCall).emit("callUser", { signal: signalData, fromId: from });
 	});
 
+  socket.on("calling", (talker) => {
+    socket.to(talker).emit("calling")
+  })
+
 	socket.on("answerCall", (data) => {
-		io.to(data.to).emit("callAccepted", data.signal)
+		socket.to(data.to).emit("callAccepted", data.signal)
 	});
 
   socket.on("disconnect", (reason) => {
@@ -117,8 +116,6 @@ io.on("connection", (socket) => {
         onlineRooms.delete(key)
       }
     })
-    console.log('onlineRooms leave', onlineRooms)
-    console.log('onlineUsers Leave', onlineUsers)
     socket.disconnect()
   })
 })
