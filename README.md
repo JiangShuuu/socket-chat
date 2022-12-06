@@ -21,10 +21,10 @@ Demo: https://profile1.jiangshuuu.com/
 
 ## 圖片範例
 1. 連線成功, 開始聊天
-![alt text](https://github.com/JiangShuuu/socket-chat/images/01.jpg)
+![alt text](https://github.com/JiangShuuu/socket-chat/blob/main/images/01.jpg)
 
 2. 傳送三次訊息, 發送視訊邀約
-![alt text](https://github.com/JiangShuuu/socket-chat/images/02.jpg)
+![alt text](https://github.com/JiangShuuu/socket-chat/blob/main/images/02.jpg)
 
 3. 離開前確認
-![alt text](https://github.com/JiangShuuu/socket-chat/images/03.jpg)
+![alt text](https://github.com/JiangShuuu/socket-chat/blob/main/images/03.jpg)
