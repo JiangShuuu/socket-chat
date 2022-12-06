@@ -23,7 +23,7 @@ Demo: https://profile1.jiangshuuu.com/
 1. 連線成功, 開始聊天
 ![alt text](https://github.com/JiangShuuu/socket-chat/blob/main/images/01.jpg)
 
-2. 傳送三次訊息, 發送視訊邀約
+2. 傳送三次訊息, 開啟鏡頭, 發送視訊邀約
 ![alt text](https://github.com/JiangShuuu/socket-chat/blob/main/images/02.jpg)
 
 3. 離開前確認
