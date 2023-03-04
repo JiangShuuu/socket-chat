@@ -1,20 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useSocketContext } from '../context/SocketContext'
-import userAPI from '../apis/user'
 import { useState } from 'react'
 import LeaveModal from '../components/LeaveModal'
 
-export default function ChatInput({ userId }) {
+export default function ChatInput() {
   const { socket, isMenuOpen, setMessages, room, start, end } =
     useSocketContext()
   const [msg, setMsg] = useState('')
   const [model, setModel] = useState(false)
 
-  const leaveBtn = async () => {
-    // 加判斷式做另外的function
-    const { data } = await userAPI.deleteUser(userId)
-    console.log(data)
+  const directLeave = () => {
     window.location.reload()
   }
 
@@ -33,7 +29,7 @@ export default function ChatInput({ userId }) {
 
   return (
     <>
-      {model && <LeaveModal leaveModel={setModel} leaveAPI={leaveBtn} />}
+      {model && <LeaveModal cancelModel={setModel} directLeave={directLeave} />}
       <InputContainer menu={isMenuOpen}>
         <div className="box">
           <form
@@ -42,7 +38,7 @@ export default function ChatInput({ userId }) {
           >
             <div
               className="inputBtn"
-              onClick={end ? () => leaveBtn() : () => setModel(true)}
+              onClick={end ? () => directLeave() : () => setModel(true)}
             >
               離開
             </div>
