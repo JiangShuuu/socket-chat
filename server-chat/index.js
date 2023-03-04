@@ -7,6 +7,8 @@ const socket = require("socket.io")
 const userRoutes = require("./routes/userRoutes")
 const PORT = process.env.PORT || 8000
 const MONGODB = process.env.MONGO_URL
+const User = require('./model/userModel')
+
 app.use(cors())
 app.use(express.json())
 
@@ -37,6 +39,13 @@ const io = socket(server, {
 global.onlineUsers = new Map()
 // 線上房間
 global.onlineRooms = new Map()
+
+// 移除 user
+const delUser = (userId) => {
+  User.findOne({ userId }).then(user => {
+    if (user) return user.delete()
+  })
+}
 
 io.on("connection", (socket) => {
   socket.on("add-user", (userId) => {
@@ -102,11 +111,16 @@ io.on("connection", (socket) => {
 		io.to(data.to).emit("callAccepted", data.signal)
 	});
 
+  socket.on("leve", (data) => {
+    console.log('gete', data)
+  })
+
   socket.on("disconnect", (reason) => {
     // 刪除 onlineUser 
     onlineUsers.forEach((value, key) => {
       if (socket.id === value) {
         onlineUsers.delete(key)
+        delUser(key)
       }
     })
     // 刪除 room & 送出離開消息
